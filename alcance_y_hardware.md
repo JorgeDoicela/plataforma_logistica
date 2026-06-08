@@ -327,12 +327,32 @@ Para garantizar la soberanía de la base de datos, la seguridad en la navegació
 
 Para cumplir el requerimiento de temperatura y rastreo en tiempo real de forma automática, se recomienda el siguiente hardware (su adquisición, instalación y conectividad están excluidas del costo de desarrollo de software):
 
-| Componente | Modelo Recomendado | Costo Aproximado |
+> [!NOTE]
+> Se presentan **dos opciones de rastreador GPS** con distinta tecnología y precio. La plataforma es 100% compatible con ambos modelos sin modificación alguna.
+
+#### Opción A — Teltonika FMB120 (2G/GPRS) · Económica
+
+| Componente | Modelo | Costo Aproximado (Ecuador) |
 |---|---|---|
-| Rastreador GPS | **Teltonika FMB120** | $35 – $45 USD por vehículo |
+| Rastreador GPS | **Teltonika FMB120** *(2G — red GPRS)* | **$50 – $70 USD** por vehículo |
 | Sensor de Temperatura | **Sonda DS18B20** (acero inoxidable, cable 1-Wire, 3–5 m) | $4 – $7 USD por vehículo |
-| Conectividad celular | **Chip M2M** GPRS/TCP (cualquier operador local) | $3 – $5 USD/mes por vehículo |
-| Instalación física | Cableado cabina → furgón refrigerado | $25 – $40 USD por vehículo (estimado) |
+| Conectividad celular | **SIM M2M** (Claro / Movistar / Multicarrier) | $3 – $5 USD / mes por vehículo |
+| Instalación física | Cableado cabina → furgón refrigerado | $25 – $40 USD por vehículo |
+
+> [!WARNING]
+> El **FMB120 opera en red 2G (GPRS)**. Las operadoras en Ecuador (Claro, Movistar) están migrando progresivamente sus redes y reduciendo cobertura 2G. Se recomienda consultar cobertura en la ruta finca-aeropuerto antes de adquirirlo.
+
+#### Opción B — Teltonika FMC130 (4G LTE) · Recomendada
+
+| Componente | Modelo | Costo Aproximado (Ecuador) |
+|---|---|---|
+| Rastreador GPS | **Teltonika FMC130** *(4G LTE — red moderna)* | **$85 – $100 USD** por vehículo |
+| Sensor de Temperatura | **Sonda DS18B20** (acero inoxidable, cable 1-Wire, 3–5 m) | $4 – $7 USD por vehículo |
+| Conectividad celular | **SIM M2M** (Claro / Movistar / Multicarrier) | $3 – $5 USD / mes por vehículo |
+| Instalación física | Cableado cabina → furgón refrigerado | $25 – $40 USD por vehículo |
+
+> [!TIP]
+> El **FMC130 es la opción recomendada**. Opera en redes 4G LTE (mayor velocidad, menor latencia y mayor estabilidad de señal) y garantiza compatibilidad a largo plazo con la infraestructura celular nacional. Precio verificado en distribuidores autorizados Ecuador: Sesotec GPS, International Global Ecuador, MercadoLibre EC.
 
 > [!TIP]
 > **Alternativa Flexible de Bajo Costo (Rastreo mediante Celular del Conductor — Costo $0):**
@@ -361,11 +381,40 @@ Estos valores sostienen la plataforma administrativa web y la base de datos de m
 ### 2. Costos de Telemetría por Vehículo (Variables)
 Estos valores se aplican de forma individual por cada camión que se decida equipar con sensores de temperatura y ubicación satelital en tiempo real.
 
-| Componente / Concepto | Modelo Recomendado | Frecuencia de Pago | Costo Estimado (USD) |
+#### Opción A — FMB120 (2G) · Económica
+
+| Componente / Concepto | Modelo | Frecuencia de Pago | Costo Estimado (USD) |
 |---|---|---|---|
-| **Dispositivo GPS** | Teltonika FMB120 (Puerto 1-Wire) | Pago Único | $35.00 – $45.00 |
-| **Sensor de Temperatura** | Sonda digital DS18B20 (Acero) | Pago Único | $4.00 – $7.00 |
-| **Instalación Física** | Mano de obra (Taller automotriz) | Pago Único | $25.00 – $40.00 (Promedio) |
-| **Línea Celular M2M (Datos)** | Plan de Datos GPRS (Claro / Movistar) | Mensual | $3.00 – $5.00 / mes |
-| **Total Inversión Inicial (Por Camión)** | **Equipos + Instalación** | **Pago Único** | **$64.00 – $92.00** |
-| **Total Operativo Mensual (Por Camión)** | **Servicio de Datos Celulares** | **Mensual** | **$3.00 – $5.00 / mes** |
+| **Dispositivo GPS** | Teltonika FMB120 — 2G (Puerto 1-Wire) | Pago Único | $50.00 – $70.00 |
+| **Sensor de Temperatura** | Sonda digital DS18B20 (Acero Inox.) | Pago Único | $4.00 – $7.00 |
+| **Instalación Física** | Mano de obra (Taller automotriz) | Pago Único | $25.00 – $40.00 |
+| **SIM M2M (Datos Celulares)** | Plan IoT/GPS (Claro / Movistar / Multicarrier) | Mensual | $3.00 – $5.00 / mes |
+| **Total Inversión Inicial (Por Camión)** | **Equipos + Instalación** | **Pago Único** | **$79.00 – $117.00** |
+| **Total Operativo Mensual (Por Camión)** | **Datos Celulares M2M** | **Mensual** | **$3.00 – $5.00 / mes** |
+| **Costo Operativo Anual (Por Camión)** | **Datos Celulares M2M × 12** | **Anual** | **$36.00 – $60.00 / año** |
+
+#### Opción B — FMC130 (4G LTE) · Recomendada
+
+| Componente / Concepto | Modelo | Frecuencia de Pago | Costo Estimado (USD) |
+|---|---|---|---|
+| **Dispositivo GPS** | Teltonika FMC130 — 4G LTE (Puerto 1-Wire) | Pago Único | $85.00 – $100.00 |
+| **Sensor de Temperatura** | Sonda digital DS18B20 (Acero Inox.) | Pago Único | $4.00 – $7.00 |
+| **Instalación Física** | Mano de obra (Taller automotriz) | Pago Único | $25.00 – $40.00 |
+| **SIM M2M (Datos Celulares)** | Plan IoT/GPS (Claro / Movistar / Multicarrier) | Mensual | $3.00 – $5.00 / mes |
+| **Total Inversión Inicial (Por Camión)** | **Equipos + Instalación** | **Pago Único** | **$114.00 – $147.00** |
+| **Total Operativo Mensual (Por Camión)** | **Datos Celulares M2M** | **Mensual** | **$3.00 – $5.00 / mes** |
+| **Costo Operativo Anual (Por Camión)** | **Datos Celulares M2M × 12** | **Anual** | **$36.00 – $60.00 / año** |
+
+### 3. Proyección por Número de Vehículos
+
+> Usando **Opción B (FMC130 4G — Recomendada)**. Inversión inicial única + costo operativo anual de conectividad.
+
+| N.° de Camiones | Inversión Inicial (Hardware + Instalación) | Costo Anual Conectividad M2M | **Costo Total Primer Año** |
+|:---:|---|---|---|
+| **1 camión** | $114 – $147 | $36 – $60 | **$150 – $207** |
+| **2 camiones** | $228 – $294 | $72 – $120 | **$300 – $414** |
+| **3 camiones** | $342 – $441 | $108 – $180 | **$450 – $621** |
+| **5 camiones** | $570 – $735 | $180 – $300 | **$750 – $1,035** |
+| **10 camiones** | $1,140 – $1,470 | $360 – $600 | **$1,500 – $2,070** |
+
+> *Nota: A partir del segundo año, solo se paga el costo anual de conectividad M2M (el hardware es de por vida). La plataforma de software ya está incluida en el costo del proyecto.*
