@@ -1,5 +1,6 @@
 import { FiMenu } from 'react-icons/fi';
 import NotificationBell from '../common/NotificationBell';
+import { Link } from 'react-router-dom';
 
 const Header = ({ user, onMenuClick, title = "Panel de Control" }) => {
     return (
@@ -16,14 +17,18 @@ const Header = ({ user, onMenuClick, title = "Panel de Control" }) => {
 
             <div className="flex items-center gap-4">
                 <NotificationBell />
-                <div className="hidden sm:flex items-center gap-3 text-right pl-4 border-l border-slate-200">
+                <Link
+                    to="/profile"
+                    className="hidden sm:flex items-center gap-3 text-right pl-4 border-l border-slate-200 hover:opacity-85 transition-opacity duration-200"
+                    title="Ir a mi perfil"
+                >
                     <div className="text-right">
                         <p className="text-sm font-semibold text-slate-800 leading-tight">{user?.firstName || 'Admin'}</p>
                     </div>
-                    <div className="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-sm ring-2 ring-white">
+                    <div className="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-sm ring-2 ring-white hover:scale-105 transition-transform">
                         {user?.firstName?.[0] || 'A'}
                     </div>
-                </div>
+                </Link>
             </div>
         </header>
     );

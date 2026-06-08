@@ -18,6 +18,11 @@ class SystemService {
         if (data.maintenanceMode !== undefined) updateData.maintenanceMode = data.maintenanceMode;
         if (data.maintenanceMessage !== undefined) updateData.maintenanceMessage = data.maintenanceMessage;
         if (data.maintenanceScheduled !== undefined) updateData.maintenanceScheduled = data.maintenanceScheduled;
+        if (data.biometricEnabled !== undefined) updateData.biometricEnabled = data.biometricEnabled;
+        if (data.allowedIPs !== undefined) updateData.allowedIPs = data.allowedIPs;
+        if (data.globalLatitude !== undefined) updateData.globalLatitude = data.globalLatitude;
+        if (data.globalLongitude !== undefined) updateData.globalLongitude = data.globalLongitude;
+        if (data.globalRadius !== undefined) updateData.globalRadius = data.globalRadius;
 
         return await prisma.systemSetting.upsert({
             where: { id: 'default' },
@@ -26,6 +31,8 @@ class SystemService {
                 id: 'default',
                 maintenanceMode: false,
                 maintenanceMessage: 'El sistema estará en mantenimiento brevemente.',
+                biometricEnabled: false,
+                globalRadius: 200,
                 ...updateData
             }
         });

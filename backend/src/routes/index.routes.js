@@ -4,6 +4,7 @@ import employeeRoutes from './employees/employee.routes.js';
 import notificationRoutes from './notifications/notification.routes.js';
 import auditRoutes from './audit.routes.js';
 import logisticsRoutes from './logistics/logistics.routes.js';
+import biometricRoutes from './biometric/biometric.routes.js';
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use('/employees', employeeRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/audit', auditRoutes);
 router.use('/logistics', logisticsRoutes);
+router.use('/biometric', biometricRoutes);
 
 export default router;

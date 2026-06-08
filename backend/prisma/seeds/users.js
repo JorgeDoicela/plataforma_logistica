@@ -126,11 +126,15 @@ export async function seedUsers(prisma) {
     try {
         await prisma.systemSetting.upsert({
             where: { id: 'default' },
-            update: {},
+            update: {
+                biometricEnabled: true
+            },
             create: {
                 id: 'default',
                 maintenanceMode: false,
                 maintenanceMessage: 'El sistema estará en mantenimiento brevemente.',
+                biometricEnabled: true,
+                globalRadius: 200
             }
         });
         console.log('✅ System Settings configurados');

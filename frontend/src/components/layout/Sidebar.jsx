@@ -73,15 +73,20 @@ const Sidebar = ({ user, onLogout, onClose }) => {
             </nav>
 
             <div className="p-4 border-t border-slate-100 bg-slate-50/50">
-                <div className="flex items-center gap-3 mb-4">
+                <Link
+                    to="/profile"
+                    onClick={() => onClose && onClose()}
+                    className="flex items-center gap-3 mb-4 p-2 -m-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition-all duration-200"
+                    title="Ir a mi perfil"
+                >
                     <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold border border-indigo-200 shadow-sm">
                         {user?.firstName?.[0] || 'A'}
                     </div>
-                    <div>
-                        <p className="text-sm font-semibold text-slate-900">{user?.firstName || 'Admin'}</p>
-                        <p className="text-xs text-slate-500">{getRoleLabel()}</p>
+                    <div className="min-w-0">
+                        <p className="text-sm font-semibold text-slate-900 truncate">{user?.firstName || 'Admin'}</p>
+                        <p className="text-xs text-slate-500 truncate">{getRoleLabel()}</p>
                     </div>
-                </div>
+                </Link>
                 <button
                     onClick={onLogout}
                     className="w-full py-2 px-4 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-all text-sm font-medium shadow-sm"

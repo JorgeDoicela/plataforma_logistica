@@ -23,6 +23,7 @@ const ReportsPage = lazy(() => import('./pages/logistics/ReportsPage.jsx'));
 const DriverMobileDashboard = lazy(() => import('./pages/logistics/DriverMobileDashboard.jsx'));
 const DriverTripDetails = lazy(() => import('./pages/logistics/DriverTripDetails.jsx'));
 const AuditLogsPage = lazy(() => import('./pages/audit/AuditLogsPage.jsx'));
+const EmployeeProfile = lazy(() => import('./pages/employees/EmployeeProfile.jsx'));
 
 function App() {
   const [auth, setAuth] = useState(() => {
@@ -99,6 +100,7 @@ function App() {
         </Route>
 
         <Route element={<RequireAuth><MainLayout user={auth.user} onLogout={handleLogout} /></RequireAuth>}>
+          <Route path="/profile" element={<EmployeeProfile token={auth.token} user={auth.user} />} />
           <Route path="/help" element={<HelpCenter />} />
         </Route>
         

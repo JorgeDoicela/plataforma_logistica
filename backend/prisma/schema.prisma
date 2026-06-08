@@ -24,6 +24,8 @@ model Employee {
   trackingConsent Boolean        @default(false)
   resetPasswordToken String?
   resetPasswordExpires DateTime?
+  currentChallenge String?
+  biometricCredentials BiometricCredential[]
   dispatches      Dispatch[]
   trips           Trip[]
   notifications   Notification[]
@@ -54,6 +56,11 @@ model SystemSetting {
   maintenanceScheduled DateTime?
   maintenanceMessage   String?
   updatedAt            DateTime  @updatedAt
+  biometricEnabled     Boolean   @default(false)
+  allowedIPs           String?
+  globalLatitude       Float?
+  globalLongitude      Float?
+  globalRadius         Float?    @default(200)
 
   @@map("system_settings")
 }
@@ -236,4 +243,22 @@ model LogisticDocument {
 
   @@index([dispatchId])
   @@map("log_documents")
+}
+
+model BiometricCredential {
+  id           String   @id @default(cuid())
+  employeeId   String
+  employee     Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  credentialId String   @unique
+  publicKey    String
+  counter      Int      @default(0)
+  transports   String?
+  deviceInfo   String?
+  aaguid       String?
+  lastVerified DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([employeeId])
+  @@map("biometric_credentials")
 }
