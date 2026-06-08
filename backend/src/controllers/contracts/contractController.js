@@ -69,7 +69,8 @@ class ContractController {
                 return res.status(400).send('Nombre de archivo inválido');
             }
 
-            const filePath = path.resolve('uploads/contracts', filename);
+            const uploadDir = process.env.VERCEL ? '/tmp/uploads/contracts' : 'uploads/contracts';
+            const filePath = path.resolve(uploadDir, filename);
             res.download(filePath);
         } catch (error) {
             res.status(404).json({ success: false, message: 'Archivo no encontrado' });

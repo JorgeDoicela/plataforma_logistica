@@ -16,7 +16,7 @@ import {
 const router = Router();
 
 // Configure local multer for logistics (allowing PDFs and Images)
-const uploadDir = 'uploads/';
+const uploadDir = process.env.VERCEL ? '/tmp/uploads/' : 'uploads/';
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }

@@ -1,5 +1,6 @@
 import documentService from '../../services/documents/documentService.js';
 import path from 'path';
+import { STORAGE_CONFIG } from '../../config/storage.config.js';
 
 class DocumentController {
     async upload(req, res) {
@@ -59,7 +60,7 @@ class DocumentController {
                 return res.status(400).send('Nombre de archivo inválido');
             }
 
-            const filePath = path.resolve('uploads/documents', filename);
+            const filePath = path.resolve(STORAGE_CONFIG.PATHS.DOCUMENTS, filename);
             res.download(filePath);
         } catch (error) {
             res.status(404).json({ success: false, message: 'Archivo no encontrado' });

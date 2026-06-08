@@ -1,6 +1,7 @@
 import documentRepository from '../../repositories/documents/documentRepository.js';
 import fs from 'fs';
 import path from 'path';
+import { STORAGE_CONFIG } from '../../config/storage.config.js';
 
 class DocumentService {
     async uploadDocument(data) {
@@ -18,7 +19,7 @@ class DocumentService {
         }
 
         // Delete file from filesystem
-        const filePath = path.resolve('uploads/documents', document.documentUrl);
+        const filePath = path.resolve(STORAGE_CONFIG.PATHS.DOCUMENTS, document.documentUrl);
         if (fs.existsSync(filePath)) {
             try {
                 fs.unlinkSync(filePath);
