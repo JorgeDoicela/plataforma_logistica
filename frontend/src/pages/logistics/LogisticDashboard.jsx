@@ -130,9 +130,11 @@ const LogisticDashboard = ({ user }) => {
                     <div className="space-y-2">
                         <p className="text-sm font-semibold text-slate-500">Viajes Finalizados</p>
                         <h3 className="text-3xl font-extrabold text-slate-900">{tripData.completed || 0}</h3>
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs bg-slate-100 text-slate-700">
-                            {tripData.active || 0} en ruta
-                        </span>
+                        <div className="flex gap-2 text-xs text-slate-500">
+                            <span className="text-emerald-600 font-semibold">{delivery.onTimeRate ?? 100}% A tiempo</span>
+                            <span>•</span>
+                            <span className="text-indigo-600 font-semibold">{tripData.active || 0} en ruta</span>
+                        </div>
                     </div>
                     <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center text-xl shadow-inner">
                         <FiTruck />
@@ -229,6 +231,10 @@ const LogisticDashboard = ({ user }) => {
                         <div>
                             <p className="text-xs text-slate-500 font-medium">Efectividad de Entrega</p>
                             <h4 className="text-2xl font-black text-emerald-600 mt-0.5">{delivery.rate}%</h4>
+                        </div>
+                        <div className="text-center">
+                            <p className="text-xs text-slate-500 font-medium">A tiempo</p>
+                            <h4 className="text-2xl font-black text-indigo-600 mt-0.5">{delivery.onTimeRate ?? 100}%</h4>
                         </div>
                         <div className="text-right">
                             <p className="text-xs text-slate-500 font-medium">Cajas Faltantes</p>

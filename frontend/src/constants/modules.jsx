@@ -1,6 +1,6 @@
 import {
     FiBarChart2, FiHelpCircle, FiTrendingUp,
-    FiMapPin, FiTruck, FiLayers, FiZap
+    FiMapPin, FiTruck, FiLayers, FiZap, FiShield
 } from 'react-icons/fi';
 
 export const adminModules = [
@@ -11,6 +11,7 @@ export const adminModules = [
     { title: 'Monitoreo GPS/Temp', icon: <FiMapPin />, color: 'bg-rose-500', path: '/admin/monitoring' },
     { title: 'Documentos', icon: <FiFileTextIcon />, color: 'bg-cyan-500', path: '/admin/documents' },
     { title: 'Reportes KPIs', icon: <FiTrendingUp />, color: 'bg-teal-500', path: '/admin/reports' },
+    { title: 'Auditoría & Trazabilidad', icon: <FiShield />, color: 'bg-red-500', path: '/admin/audit' },
     { title: 'Ayuda', icon: <FiHelpCircle />, color: 'bg-amber-500', path: '/help' },
 ];
 

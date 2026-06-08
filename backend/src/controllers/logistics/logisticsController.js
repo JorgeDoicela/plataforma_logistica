@@ -920,7 +920,29 @@ export const getDashboardStats = async (req, res) => {
         });
 
         // Entregas a tiempo / retrasadas
-        // Haremos un mock simple para las entregas efectivas y fallidas basadas en estados
+        const finalizedTrips = await prisma.trip.findMany({
+            where: { status: 'Finalizado' },
+            include: { history: true }
+        });
+
+        let onTimeTripsCount = 0;
+        finalizedTrips.forEach(trip => {
+            const assignedLog = trip.history.find(h => h.status === 'Asignado');
+            const finalizedLog = trip.history.find(h => h.status === 'Finalizado');
+            if (assignedLog && finalizedLog) {
+                // Si tardó menos de 5 horas, se considera a tiempo
+                const diffMs = new Date(finalizedLog.changedAt) - new Date(assignedLog.changedAt);
+                const diffHours = diffMs / (1000 * 60 * 60);
+                if (diffHours <= 5) {
+                    onTimeTripsCount++;
+                }
+            } else {
+                onTimeTripsCount++; // Fallback si falta historial
+            }
+        });
+
+        const onTimeRate = finalizedTrips.length > 0 ? (onTimeTripsCount / finalizedTrips.length) * 100 : 100;
+
         const deliveredCount = boxStats.Entregada;
         const failedCount = boxStats.Faltante;
         const totalDeliveries = deliveredCount + failedCount;
@@ -949,7 +971,8 @@ export const getDashboardStats = async (req, res) => {
                 deliveries: {
                     success: deliveredCount,
                     failed: failedCount,
-                    rate: parseFloat(deliveryRate.toFixed(1))
+                    rate: parseFloat(deliveryRate.toFixed(1)),
+                    onTimeRate: parseFloat(onTimeRate.toFixed(1))
                 }
             }
         });

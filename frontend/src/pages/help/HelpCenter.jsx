@@ -4,7 +4,7 @@ import {
     FiDollarSign, FiSearch, FiChevronDown, FiChevronUp,
     FiClock, FiBriefcase, FiBarChart2, FiActivity, FiTarget,
     FiExternalLink, FiHelpCircle, FiArrowRight, FiUsers,
-    FiGift, FiFileText, FiTrendingUp
+    FiGift, FiFileText, FiTrendingUp, FiLayers, FiMapPin
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -59,6 +59,7 @@ const HelpCenter = () => {
 
     const categories = [
         { id: 'general', label: 'General', icon: FiBook },
+        { id: 'logistics', label: 'Operación Logística', icon: FiLayers },
         { id: 'employee', label: 'Para Personal', icon: FiUser },
         { id: 'management', label: 'Gestión RRHH', icon: FiUsers },
         { id: 'finance', label: 'Finanzas y Nómina', icon: FiDollarSign },
@@ -94,6 +95,53 @@ const HelpCenter = () => {
                             <li><strong>Encriptación:</strong> Datos bancarios y de nómina protegidos.</li>
                             <li><strong>Geolocalización:</strong> Opcional en marcaciones para validar la presencia en sitio.</li>
                             <li><strong>Prevención de Fraude:</strong> Detección automática de intentos de marcación vía VPN o cambio de hora manual.</li>
+                        </ul>
+                    </>
+                )
+            }
+        ],
+        logistics: [
+            {
+                id: 'l1',
+                title: 'Ciclo Completo de Despacho y Asignación',
+                icon: FiLayers,
+                content: (
+                    <>
+                        <p>La plataforma permite automatizar el ciclo completo de la cadena de suministro:</p>
+                        <ol className="list-decimal pl-5 space-y-2 mt-2">
+                            <li><strong>Crear Despacho:</strong> Registre el despacho especificando la finca de origen, el destino (aeropuerto) y la cantidad de cajas.</li>
+                            <li><strong>Asignar Viaje:</strong> Asigne un conductor y un vehículo al despacho creado. Esto cambia el estado a "Preparación".</li>
+                            <li><strong>Escanear Cajas (QR):</strong> El conductor utiliza la aplicación móvil para escanear y cargar cada una de las cajas de forma segura.</li>
+                            <li><strong>Monitoreo y Cierre:</strong> Registre la salida de finca y llegada a aeropuerto, cargando la guía firmada por el operador para finalizar el viaje.</li>
+                        </ol>
+                    </>
+                )
+            },
+            {
+                id: 'l2',
+                title: 'Carga Documental y Guías Firmadas',
+                icon: FiFileText,
+                content: (
+                    <>
+                        <p>Para asegurar el cierre funcional de la operación, es obligatorio registrar la documentación de respaldo:</p>
+                        <ul className="list-disc pl-5 space-y-2 mt-2">
+                            <li><strong>Guías Relacionadas:</strong> Cargadas por el operador logístico al inicio del viaje (PDF/Imagen).</li>
+                            <li><strong>Guía Firmada:</strong> Subida como evidencia fotográfica o PDF firmada por el conductor u operador del aeropuerto tras la entrega de la carga.</li>
+                            <li><strong>Visualización:</strong> Todos los documentos cargados se pueden visualizar e imprimir desde el panel "Documentos".</li>
+                        </ul>
+                    </>
+                )
+            },
+            {
+                id: 'l3',
+                title: 'Monitoreo Satelital y Control Térmico',
+                icon: FiMapPin,
+                content: (
+                    <>
+                        <p>Monitoree las variables críticas del viaje en tránsito:</p>
+                        <ul className="list-disc pl-5 space-y-2 mt-2">
+                            <li><strong>Ubicación GPS:</strong> Transmisión satelital de la ubicación exacta del vehículo en el mapa de ruta.</li>
+                            <li><strong>Temperatura de Carga:</strong> Lecturas en tiempo real del sensor térmico para resguardar la cadena de frío. Rango óptimo permitido: <strong>2°C - 8°C</strong>. Si se sobrepasan los límites, el sistema activa una alarma crítica.</li>
                         </ul>
                     </>
                 )

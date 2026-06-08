@@ -22,6 +22,7 @@ const DocumentsPage = lazy(() => import('./pages/logistics/DocumentsPage.jsx'));
 const ReportsPage = lazy(() => import('./pages/logistics/ReportsPage.jsx'));
 const DriverMobileDashboard = lazy(() => import('./pages/logistics/DriverMobileDashboard.jsx'));
 const DriverTripDetails = lazy(() => import('./pages/logistics/DriverTripDetails.jsx'));
+const AuditLogsPage = lazy(() => import('./pages/audit/AuditLogsPage.jsx'));
 
 function App() {
   const [auth, setAuth] = useState(() => {
@@ -88,6 +89,7 @@ function App() {
           <Route path="/admin/monitoring" element={<MonitoringPage />} />
           <Route path="/admin/documents" element={<DocumentsPage />} />
           <Route path="/admin/reports" element={<ReportsPage />} />
+          <Route path="/admin/audit" element={<AuditLogsPage />} />
         </Route>
 
         {/* Panel para Choferes */}
