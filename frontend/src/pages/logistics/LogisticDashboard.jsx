@@ -56,26 +56,39 @@ const LogisticDashboard = ({ user }) => {
     return (
         <div className="space-y-8 p-6 max-w-7xl mx-auto">
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-indigo-900 to-slate-900 text-white p-8 rounded-2xl shadow-lg relative overflow-hidden">
-                <div className="absolute top-0 right-0 -mt-10 -mr-10 w-48 h-48 bg-white/10 rounded-full blur-2xl"></div>
-                <div className="relative z-10">
-                    <h1 className="text-3xl font-extrabold tracking-tight">Panel de Control Logístico</h1>
-                    <p className="text-indigo-200 mt-2 font-medium">
-                        Bienvenido de nuevo, {user?.firstName} {user?.lastName} • Rol: {user?.role === 'admin' ? 'Administrador' : 'Operador Logístico'}
-                    </p>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 text-white p-8 rounded-3xl shadow-[0_15px_35px_rgba(99,102,241,0.15)] relative overflow-hidden border border-indigo-950">
+                {/* Background Ambient Glows */}
+                <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl"></div>
+                <div className="absolute -bottom-16 left-1/4 w-60 h-60 bg-purple-500/15 rounded-full blur-3xl"></div>
+                <div className="absolute top-1/2 left-10 w-24 h-24 bg-teal-500/10 rounded-full blur-2xl"></div>
+
+                <div className="relative z-10 space-y-3">
+                    <h1 className="text-3xl md:text-4xl font-black tracking-tight leading-none bg-gradient-to-r from-white via-indigo-50 to-indigo-100 bg-clip-text text-transparent">
+                        Panel de Control Logístico
+                    </h1>
+                    <div className="flex flex-wrap items-center gap-2.5 mt-2">
+                        <span className="text-slate-300 text-sm font-medium">
+                            Bienvenido de nuevo, <span className="text-white font-semibold">{user?.firstName} {user?.lastName}</span>
+                        </span>
+                        <span className="inline-flex items-center gap-1 py-0.5 px-2.5 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-200 border border-indigo-500/30 backdrop-blur-md">
+                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+                            {user?.role === 'admin' ? 'Administrador' : 'Operador Logístico'}
+                        </span>
+                    </div>
                 </div>
-                <div className="flex gap-3 relative z-10">
+
+                <div className="flex flex-wrap gap-3 relative z-10">
                     <button 
                         onClick={() => navigate('/admin/dispatches')}
-                        className="px-5 py-2.5 bg-white text-indigo-900 font-semibold rounded-xl hover:bg-indigo-50 transition-all shadow-md text-sm flex items-center gap-2"
+                        className="px-6 py-3 bg-white text-indigo-950 font-bold rounded-xl hover:bg-indigo-50 active:scale-95 transition-all shadow-[0_4px_12px_rgba(255,255,255,0.15)] hover:shadow-[0_6px_16px_rgba(255,255,255,0.25)] text-sm flex items-center gap-2"
                     >
-                        Gestionar Despachos <FiArrowRight />
+                        Gestionar Despachos <FiArrowRight className="text-indigo-600 stroke-[3]" />
                     </button>
                     <button 
                         onClick={() => navigate('/admin/trips')}
-                        className="px-5 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-all border border-indigo-500 shadow-md text-sm flex items-center gap-2"
+                        className="px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-500 active:scale-95 transition-all border border-indigo-500/40 shadow-[0_4px_14px_rgba(99,102,241,0.3)] hover:shadow-[0_6px_20px_rgba(99,102,241,0.4)] text-sm flex items-center gap-2"
                     >
-                        Programar Viaje <FiTruck />
+                        Programar Viaje <FiTruck className="text-indigo-200" />
                     </button>
                 </div>
             </div>

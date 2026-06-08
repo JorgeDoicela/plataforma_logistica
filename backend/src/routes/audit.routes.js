@@ -4,9 +4,9 @@ import { authenticate, authorize } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
-// Todas las rutas de auditoría requieren ser administrador
+// Todas las rutas de auditoría requieren ser administrador u operador
 router.use(authenticate);
-router.use(authorize(['admin']));
+router.use(authorize(['admin', 'operator']));
 
 router.get('/', getAuditLogs);
 router.get('/:entityId', getEntityLogs);

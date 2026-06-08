@@ -53,15 +53,21 @@ const DriverMobileDashboard = ({ user }) => {
     return (
         <div className="p-4 max-w-md mx-auto space-y-6">
             {/* Header profile info */}
-            <div className="bg-gradient-to-br from-indigo-700 to-indigo-950 text-white p-6 rounded-2xl shadow-md space-y-2 relative overflow-hidden">
-                <div className="absolute top-0 right-0 -mt-8 -mr-8 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
-                <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-white/20 border border-white/30 flex items-center justify-center font-bold text-lg">
+            <div className="bg-gradient-to-br from-indigo-800 via-indigo-950 to-slate-950 text-white p-6 rounded-3xl shadow-[0_10px_30px_rgba(99,102,241,0.2)] border border-indigo-900/40 relative overflow-hidden">
+                {/* Glowing light sources */}
+                <div className="absolute top-0 right-0 -mt-12 -mr-12 w-36 h-36 bg-indigo-500/30 rounded-full blur-2xl"></div>
+                <div className="absolute -bottom-16 -left-16 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl"></div>
+                
+                <div className="flex items-center gap-4 relative z-10">
+                    <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center font-extrabold text-xl shadow-[inset_0_1px_3px_rgba(255,255,255,0.2)] backdrop-blur-md text-indigo-200">
                         {user?.firstName?.[0]}
                     </div>
                     <div>
-                        <h2 className="font-extrabold text-lg leading-tight">{user?.firstName} {user?.lastName}</h2>
-                        <span className="text-xs text-indigo-200">Chofer Profesional</span>
+                        <h2 className="font-black text-xl tracking-tight leading-tight bg-gradient-to-r from-white via-indigo-50 to-indigo-100 bg-clip-text text-transparent">{user?.firstName} {user?.lastName}</h2>
+                        <div className="flex items-center gap-1.5 mt-1">
+                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span className="text-xs text-indigo-200 font-medium tracking-wide">Chofer Profesional</span>
+                        </div>
                     </div>
                 </div>
             </div>
