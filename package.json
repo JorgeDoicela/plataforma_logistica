@@ -1,8 +1,11 @@
 {
-    "name": "hr-system-root",
+    "name": "logistics-system-root",
     "version": "1.0.0",
     "scripts": {
-        "vercel-build": "echo 'Building...'"
+        "vercel-build": "npx prisma generate --schema=backend/prisma/schema.prisma",
+        "db:push": "npx prisma db push --schema=backend/prisma/schema.prisma",
+        "db:migrate": "npx prisma migrate deploy --schema=backend/prisma/schema.prisma",
+        "db:seed": "node -r dotenv/config backend/prisma/seed.js"
     },
     "workspaces": [
         "frontend",

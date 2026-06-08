@@ -198,7 +198,7 @@ const DocumentsPage = () => {
                                                     </div>
                                                 </div>
                                                 <a
-                                                    href={`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}${doc.fileUrl}?token=${localStorage.getItem('token')}`}
+                                                    href={`${import.meta.env.VITE_API_URL || ''}${doc.fileUrl}?token=${localStorage.getItem('token')}`}
                                                     target="_blank"
                                                     rel="noreferrer"
                                                     className="p-2 bg-white border border-slate-200 hover:border-indigo-200 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors shadow-sm shrink-0"

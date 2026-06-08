@@ -357,7 +357,7 @@ const DriverTripDetails = ({ user }) => {
                             {documents.map((doc) => (
                                 <a
                                     key={doc.id}
-                                    href={`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}${doc.fileUrl}?token=${localStorage.getItem('token')}`}
+                                    href={`${import.meta.env.VITE_API_URL || ''}${doc.fileUrl}?token=${localStorage.getItem('token')}`}
                                     target="_blank"
                                     rel="noreferrer"
                                     className="p-2 border border-slate-100 rounded-lg bg-slate-50 hover:bg-slate-100 flex items-center gap-2 text-xs text-indigo-600 hover:text-indigo-800 transition-colors"
