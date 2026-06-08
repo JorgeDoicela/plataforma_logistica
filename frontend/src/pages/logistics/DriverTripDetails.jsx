@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import logisticsService from '../../services/logisticsService';
 import { 
     FiArrowLeft, FiMapPin, FiNavigation, FiBox, 
-    FiCamera, FiUpload, FiCheck, FiAlertTriangle, FiInfo, FiFileText 
+    FiCamera, FiUpload, FiCheck, FiAlertTriangle, FiInfo, FiFileText,
+    FiTruck
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
