@@ -175,7 +175,7 @@ Como incentivo exclusivo por la adjudicación del proyecto, **se desarrollarán 
 >
 > Si el cliente decide no utilizarlos, la plataforma de logística funciona con plena autonomía sin ellos.
 
-Nos diferenciamos de la competencia entregando no solo una plataforma logística, sino un **ecosistema de gestión empresarial completo** que ningún otro proveedor puede ofrecer al mismo precio. Los siguientes módulos están disponibles e integrados desde el día uno:
+Nos diferenciamos entregando no solo una plataforma logística, sino un **ecosistema de gestión completo**. Los siguientes módulos están disponibles e integrados desde el día uno:
 
 ---
 
@@ -283,7 +283,7 @@ Este módulo es especialmente valioso para el control de conductores, despachado
 
 ---
 
-> **Resumen del Paquete Adicional Gratuito:** Con la adjudicación del contrato, el cliente recibe, además de la plataforma logística completa de las Etapas 1-4, una **suite empresarial de 8 módulos adicionales** (Analítica, Asistencia, Nómina, Desempeño, Reclutamiento, Reportes, Contratos y Contabilidad) que normalmente representarían una inversión de desarrollo adicional significativa. Todos estos módulos pueden habilitarse, deshabilitarse o personalizarse según las necesidades específicas de la operación del cliente.
+> **Resumen del Paquete Adicional Gratuito:** Con la adjudicación del proyecto, el cliente recibe, además de la plataforma logística completa de las Etapas 1-4, una **suite de 8 módulos adicionales** (Analítica, Asistencia, Nómina, Desempeño, Reclutamiento, Reportes, Contratos y Contabilidad) que normalmente representarían una inversión de desarrollo adicional significativa. Todos estos módulos pueden habilitarse, deshabilitarse o personalizarse según las necesidades específicas de la operación del cliente.
 
 ---
 
@@ -325,3 +325,18 @@ Para cumplir el requerimiento de temperatura y rastreo en tiempo real de forma a
 * **Inteligencia Artificial u optimización de rutas:** **Excluido** del alcance de este proyecto.
 * **Integración con bus CAN del motor** (revoluciones, consumo de combustible exacto): **Excluido.**
 * **Módulos adicionales no descritos expresamente en este documento:** **Excluido.**
+
+---
+
+## Propiedad Intelectual, Licenciamiento y Cumplimiento Legal
+
+### Propiedad del Código Fuente y Modelo de Entrega
+* **Propiedad Intelectual:** El presente proyecto contempla el despliegue y la configuración operativa de la plataforma en el servidor del cliente (AWS Lightsail) bajo licencia de uso, mas **no incluye la transferencia, propiedad ni entrega del código fuente original** del sistema.
+* **Formato de Instalación Seguro:** Para garantizar la protección de la propiedad intelectual del desarrollo, el software será instalado y configurado en el servidor del cliente en formato de producción optimizado, utilizando código compilado/ofuscado y/o mediante contenedores **Docker** cerrados y preconfigurados.
+* **Autonomía Total sin Tocar Código:** El cliente no requiere acceder al código fuente para ninguna tarea de gestión u operación. El panel administrativo cuenta con módulos e interfaces visuales completas para que el administrador gestione de forma 100% autónoma: usuarios, roles, empleados, conductores, vehículos, fincas, destinos, geocercas, horarios, turnos y configuraciones de seguridad global sin depender del equipo técnico.
+
+### Cumplimiento con la Ley de Protección de Datos Personales (LOPDP — Ecuador)
+El sistema está diseñado bajo estándares de seguridad informática y cumple con los requerimientos de la **Ley Orgánica de Protección de Datos Personales** vigente en Ecuador, evitando cualquier riesgo de contingencia legal para su empresa:
+* **Consentimiento Explícito:** La aplicación móvil/PWA para conductores y el digitalizador de asistencia incluyen flujos de consentimiento explícito e informado para el tratamiento de datos y geolocalización.
+* **Minimización de Datos Biométricos:** La autenticación biométrica de última generación (FIDO2/WebAuthn) se procesa localmente en el chip de seguridad del dispositivo del usuario (celular o computador). El servidor **nunca** almacena huellas digitales o rostros crudos, cumpliendo estrictamente con la ley.
+* **Trazabilidad y Auditoría:** Registro inalterable de accesos y acciones en la base de datos (logs de auditoría con marcas de tiempo e IPs de origen) para auditorías de cumplimiento.
