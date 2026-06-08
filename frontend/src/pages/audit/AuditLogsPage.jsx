@@ -23,7 +23,10 @@ const translations = {
         'LOGOUT': 'CIERRE SESIÓN',
         'RESET_PASSWORD': 'RESTABLECER CONTRASEÑA',
         'BULK_CREATE': 'CREACIÓN MASIVA',
-        'DEACTIVATE': 'DESACTIVAR'
+        'DEACTIVATE': 'DESACTIVAR',
+        'SCAN': 'ESCANEO QR',
+        'STATUS_CHANGE': 'CAMBIO ESTADO',
+        'UPLOAD_DOCUMENT': 'CARGA DOCUMENTAL'
     },
     entities: {
         'Employee': 'Empleado',
@@ -33,7 +36,13 @@ const translations = {
         'JobVacancy': 'Vacante',
         'Attendance': 'Asistencia',
         'ClimateSurvey': 'Encuesta Clima',
-        'Contract': 'Contrato'
+        'Contract': 'Contrato',
+        'Dispatch': 'Despacho',
+        'Box': 'Caja',
+        'Trip': 'Viaje',
+        'BoxScan': 'Escaneo Caja',
+        'Vehicle': 'Vehículo',
+        'LogisticDocument': 'Doc Logística'
     }
 };
 

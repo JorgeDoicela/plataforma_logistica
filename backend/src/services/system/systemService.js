@@ -2,45 +2,37 @@ import prisma from '../../database/db.js';
 
 class SystemService {
     async getSettings() {
-        // upsert guarantees the record always exists
         return await prisma.systemSetting.upsert({
             where: { id: 'default' },
             update: {},
             create: {
                 id: 'default',
                 maintenanceMode: false,
-                biometricEnabled: false,
-                allowedIPs: null,
-                globalLatitude: null,
-                globalLongitude: null,
-                globalRadius: 200,
                 maintenanceMessage: 'El sistema estará en mantenimiento brevemente.'
             }
         });
     }
 
     async updateSettings(data) {
-        // upsert so it works even if the record doesn't exist yet
+        const updateData = {};
+        if (data.maintenanceMode !== undefined) updateData.maintenanceMode = data.maintenanceMode;
+        if (data.maintenanceMessage !== undefined) updateData.maintenanceMessage = data.maintenanceMessage;
+        if (data.maintenanceScheduled !== undefined) updateData.maintenanceScheduled = data.maintenanceScheduled;
+
         return await prisma.systemSetting.upsert({
             where: { id: 'default' },
-            update: data,
+            update: updateData,
             create: {
                 id: 'default',
                 maintenanceMode: false,
-                biometricEnabled: false,
-                allowedIPs: null,
-                globalLatitude: null,
-                globalLongitude: null,
-                globalRadius: 200,
                 maintenanceMessage: 'El sistema estará en mantenimiento brevemente.',
-                ...data
+                ...updateData
             }
         });
     }
 
     async checkHealth() {
         try {
-            // Check DB connection
             await prisma.$queryRaw`SELECT 1`;
             return {
                 status: 'UP',
@@ -60,7 +52,6 @@ class SystemService {
 
     async reverseGeocode(lat, lng) {
         try {
-            // Validate coordinates
             if (!lat || !lng) throw new Error('Coordinates missing');
 
             const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`;
@@ -79,7 +70,7 @@ class SystemService {
             return data;
         } catch (error) {
             console.error('Geocoding Error:', error.message);
-            return null; // Return null instead of crashing, frontend will handle it
+            return null;
         }
     }
 }

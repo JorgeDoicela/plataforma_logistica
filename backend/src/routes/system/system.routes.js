@@ -39,12 +39,7 @@ router.get('/geocode', async (req, res) => {
 
 // Public endpoint - biometric setting (no auth needed for attendance page)
 router.get('/biometric-setting', async (req, res) => {
-    try {
-        const settings = await systemService.getSettings();
-        res.json({ success: true, biometricEnabled: settings?.biometricEnabled ?? false });
-    } catch (error) {
-        res.json({ success: true, biometricEnabled: false });
-    }
+    res.json({ success: true, biometricEnabled: false });
 });
 
 export default router;

@@ -1,246 +1,10 @@
 import bcrypt from 'bcryptjs';
-import { encrypt, encryptSalary } from '../../src/utils/encryption.js';
-
-// 10 empleados reales ecuatorianos + 1 admin
-// Contraseña de todos: Emplifi2025!
-// Correos: nombre.apellido@emplifi.com
-
-const EMPLOYEES = [
-    {
-        firstName: 'Andrés',
-        lastName: 'Morales',
-        email: 'andres.morales@emplifi.com',
-        identityCard: '1712345678',
-        department: 'Tecnología',
-        position: 'Desarrollador Senior',
-        salary: 2200,
-        phone: '0991234567',
-        address: 'Av. República del Salvador N36-84, Quito',
-        civilStatus: 'Casado',
-        contractType: 'Indefinido',
-        birthDate: new Date('1990-03-15'),
-        hireDate: new Date('2021-06-01'),
-        bankName: 'Banco Pichincha',
-        accountNumber: '2201234567',
-        accountType: 'Ahorros',
-        vacationDays: 15,
-    },
-    {
-        firstName: 'Valeria',
-        lastName: 'Espinoza',
-        email: 'valeria.espinoza@emplifi.com',
-        identityCard: '1723456789',
-        department: 'Recursos Humanos',
-        position: 'Coordinadora de RRHH',
-        salary: 1800,
-        phone: '0982345678',
-        address: 'Calle Veintimilla E7-45, Quito',
-        civilStatus: 'Soltera',
-        contractType: 'Indefinido',
-        birthDate: new Date('1993-07-22'),
-        hireDate: new Date('2020-03-15'),
-        bankName: 'Banco Guayaquil',
-        accountNumber: '3301234567',
-        accountType: 'Corriente',
-        vacationDays: 15,
-    },
-    {
-        firstName: 'Diego',
-        lastName: 'Vásquez',
-        email: 'diego.vasquez@emplifi.com',
-        identityCard: '1734567890',
-        department: 'Finanzas',
-        position: 'Analista Financiero',
-        salary: 1950,
-        phone: '0973456789',
-        address: 'Av. Naciones Unidas E10-44, Quito',
-        civilStatus: 'Casado',
-        contractType: 'Indefinido',
-        birthDate: new Date('1988-11-08'),
-        hireDate: new Date('2019-09-01'),
-        bankName: 'Produbanco',
-        accountNumber: '4401234567',
-        accountType: 'Ahorros',
-        vacationDays: 15,
-    },
-    {
-        firstName: 'Gabriela',
-        lastName: 'Torres',
-        email: 'gabriela.torres@emplifi.com',
-        identityCard: '1745678901',
-        department: 'Marketing',
-        position: 'Especialista en Marketing Digital',
-        salary: 1700,
-        phone: '0964567890',
-        address: 'Calle Portugal E9-25, Quito',
-        civilStatus: 'Soltera',
-        contractType: 'Indefinido',
-        birthDate: new Date('1995-04-30'),
-        hireDate: new Date('2022-01-10'),
-        bankName: 'Banco Internacional',
-        accountNumber: '5501234567',
-        accountType: 'Ahorros',
-        vacationDays: 15,
-    },
-    {
-        firstName: 'Sebastián',
-        lastName: 'Herrera',
-        email: 'sebastian.herrera@emplifi.com',
-        identityCard: '1756789012',
-        department: 'Tecnología',
-        position: 'Ingeniero DevOps',
-        salary: 2500,
-        phone: '0955678901',
-        address: 'Av. Amazonas N21-147, Quito',
-        civilStatus: 'Soltero',
-        contractType: 'Indefinido',
-        birthDate: new Date('1991-09-14'),
-        hireDate: new Date('2021-11-01'),
-        bankName: 'Banco Pichincha',
-        accountNumber: '6601234567',
-        accountType: 'Corriente',
-        vacationDays: 15,
-    },
-    {
-        firstName: 'Camila',
-        lastName: 'Rodríguez',
-        email: 'camila.rodriguez@emplifi.com',
-        identityCard: '1767890123',
-        department: 'Ventas',
-        position: 'Ejecutiva de Ventas',
-        salary: 1600,
-        phone: '0946789012',
-        address: 'Calle Shyris N36-188, Quito',
-        civilStatus: 'Casada',
-        contractType: 'Indefinido',
-        birthDate: new Date('1994-01-25'),
-        hireDate: new Date('2022-05-16'),
-        bankName: 'Banco del Pacífico',
-        accountNumber: '7701234567',
-        accountType: 'Ahorros',
-        vacationDays: 15,
-    },
-    {
-        firstName: 'Mateo',
-        lastName: 'Jiménez',
-        email: 'mateo.jimenez@emplifi.com',
-        identityCard: '1778901234',
-        department: 'Operaciones',
-        position: 'Coordinador de Operaciones',
-        salary: 1850,
-        phone: '0937890123',
-        address: 'Av. 6 de Diciembre N24-358, Quito',
-        civilStatus: 'Casado',
-        contractType: 'Indefinido',
-        birthDate: new Date('1987-06-03'),
-        hireDate: new Date('2018-08-01'),
-        bankName: 'Banco Guayaquil',
-        accountNumber: '8801234567',
-        accountType: 'Ahorros',
-        vacationDays: 15,
-    },
-    {
-        firstName: 'Daniela',
-        lastName: 'Salazar',
-        email: 'daniela.salazar@emplifi.com',
-        identityCard: '1789012345',
-        department: 'Legal',
-        position: 'Asesora Legal',
-        salary: 2100,
-        phone: '0928901234',
-        address: 'Calle Baquedano E5-29, Quito',
-        civilStatus: 'Soltera',
-        contractType: 'Indefinido',
-        birthDate: new Date('1992-12-17'),
-        hireDate: new Date('2020-07-01'),
-        bankName: 'Produbanco',
-        accountNumber: '9901234567',
-        accountType: 'Corriente',
-        vacationDays: 15,
-    },
-    {
-        firstName: 'Felipe',
-        lastName: 'Castillo',
-        email: 'felipe.castillo@emplifi.com',
-        identityCard: '1790123456',
-        department: 'Tecnología',
-        position: 'Diseñador UX/UI',
-        salary: 1900,
-        phone: '0919012345',
-        address: 'Av. Colón E4-60, Quito',
-        civilStatus: 'Soltero',
-        contractType: 'Indefinido',
-        birthDate: new Date('1996-08-09'),
-        hireDate: new Date('2023-02-01'),
-        bankName: 'Banco Internacional',
-        accountNumber: '1001234567',
-        accountType: 'Ahorros',
-        vacationDays: 15,
-    },
-    {
-        firstName: 'Paola',
-        lastName: 'Mendoza',
-        email: 'paola.mendoza@emplifi.com',
-        identityCard: '1701234567',
-        department: 'Finanzas',
-        position: 'Contadora General',
-        salary: 2000,
-        phone: '0901234567',
-        address: 'Calle Roca E4-25, Quito',
-        civilStatus: 'Casada',
-        contractType: 'Indefinido',
-        birthDate: new Date('1989-02-28'),
-        hireDate: new Date('2019-04-15'),
-        bankName: 'Banco Pichincha',
-        accountNumber: '1101234567',
-        accountType: 'Ahorros',
-        vacationDays: 15,
-    },
-    {
-        firstName: 'Kevin',
-        lastName: 'Arismendi',
-        email: 'kevin.arismendi@emplifi.com',
-        identityCard: '1799988877',
-        department: 'Tecnología',
-        position: 'Junior Developer',
-        salary: 950,
-        phone: '0999888777',
-        address: 'Av. El Inca, Quito',
-        civilStatus: 'Soltero',
-        contractType: 'Temporal',
-        birthDate: new Date('2000-05-10'),
-        hireDate: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000), // 2 meses de antigüedad (Riesgo)
-        bankName: 'Produbanco',
-        accountNumber: '1212121212',
-        accountType: 'Ahorros',
-        vacationDays: 15,
-    },
-    {
-        firstName: 'Lucía',
-        lastName: 'Pazmiño',
-        email: 'lucia.paz@emplifi.com',
-        identityCard: '1788877766',
-        department: 'Marketing',
-        position: 'Asistente Creativo',
-        salary: 850,
-        phone: '0988877766',
-        address: 'Valle de los Chillos, Quito',
-        civilStatus: 'Soltera',
-        contractType: 'Indefinido',
-        birthDate: new Date('1992-10-12'),
-        hireDate: new Date('2018-01-01'), // > 5 años (Sin promoción = Riesgo)
-        bankName: 'Banco Pichincha',
-        accountNumber: '3434343434',
-        accountType: 'Ahorros',
-        vacationDays: 15,
-    },
-];
 
 export async function seedUsers(prisma) {
-    console.log('[USERS] Creando Admin y 10 Empleados...');
+    console.log('[USERS] Creando Admin, Operadores y Choferes de Logística...');
     const password = await bcrypt.hash('Emplifi2025!', 10);
 
-    // ── Admin ──────────────────────────────────────────────────────────────────
+    // 1. Crear Admin
     let admin;
     try {
         admin = await prisma.employee.upsert({
@@ -251,136 +15,114 @@ export async function seedUsers(prisma) {
                 lastName: 'Doicela',
                 email: 'admin@emplifi.com',
                 role: 'admin',
-                department: 'Dirección',
-                position: 'Director General',
-                salary: encryptSalary(5000),
                 password,
                 identityCard: '0101010101',
-                birthDate: new Date('1980-01-01'),
-                hireDate: new Date('2018-01-01'),
                 isActive: true,
                 address: 'Av. Patria E4-05, Quito',
                 phone: '0999999999',
-                civilStatus: 'Casado',
-                contractType: 'Indefinido',
-                bankName: encrypt('Banco Pichincha'),
-                accountNumber: encrypt('0001234567'),
-                accountType: 'Corriente',
-                vacationDays: 15,
             }
         });
         console.log('✅ Admin: admin@emplifi.com / Emplifi2025!');
     } catch (e) {
-        console.log('⚠️ Admin creation failed: ' + e.message);
-        admin = await prisma.employee.findUnique({ where: { email: 'admin@emplifi.com' } });
+        console.error('⚠️ Admin creation failed: ' + e.message);
     }
 
-    // ── 10 Empleados ──────────────────────────────────────────────────────────
-    const employees = [];
-    for (const emp of EMPLOYEES) {
+    // 2. Crear Operadores
+    const operators = [
+        {
+            firstName: 'Valeria',
+            lastName: 'Espinoza',
+            email: 'valeria.espinoza@emplifi.com',
+            identityCard: '1723456789',
+            phone: '0982345678',
+            address: 'Calle Veintimilla E7-45, Quito',
+        },
+        {
+            firstName: 'Mateo',
+            lastName: 'Jiménez',
+            email: 'mateo.jimenez@emplifi.com',
+            identityCard: '1778901234',
+            phone: '0937890123',
+            address: 'Av. 6 de Diciembre N24-358, Quito',
+        }
+    ];
+
+    for (const op of operators) {
         try {
-            const created = await prisma.employee.upsert({
-                where: { email: emp.email },
-                update: { password },
+            await prisma.employee.upsert({
+                where: { email: op.email },
+                update: { password, role: 'operator' },
                 create: {
-                    firstName: emp.firstName,
-                    lastName: emp.lastName,
-                    email: emp.email,
+                    firstName: op.firstName,
+                    lastName: op.lastName,
+                    email: op.email,
+                    role: 'operator',
                     password,
-                    role: 'employee',
-                    department: emp.department,
-                    position: emp.position,
-                    salary: encryptSalary(emp.salary),
-                    identityCard: emp.identityCard,
-                    birthDate: emp.birthDate,
-                    hireDate: emp.hireDate,
+                    identityCard: op.identityCard,
+                    phone: op.phone,
+                    address: op.address,
                     isActive: true,
-                    address: emp.address,
-                    phone: emp.phone,
-                    civilStatus: emp.civilStatus,
-                    contractType: emp.contractType,
-                    bankName: encrypt(emp.bankName),
-                    accountNumber: encrypt(emp.accountNumber),
-                    accountType: emp.accountType,
-                    vacationDays: emp.vacationDays,
                 }
             });
-            employees.push(created);
-            console.log(`✅ ${emp.firstName} ${emp.lastName}: ${emp.email} / Emplifi2025!`);
+            console.log(`✅ Operador: ${op.email} / Emplifi2025!`);
         } catch (e) {
-            console.log(`⚠️ Error creando ${emp.email}: ${e.message}`);
+            console.error(`⚠️ Error al crear operador ${op.email}: ${e.message}`);
         }
     }
 
-    // ── Contador ─────────────────────────────────────────────────────────────
-    let accountant;
-    try {
-        accountant = await prisma.employee.upsert({
-            where: { email: 'contabilidad@emplifi.com' },
-            update: { password },
-            create: {
-                firstName: 'Ana',
-                lastName: 'Contadora',
-                email: 'contabilidad@emplifi.com',
-                role: 'accounting',
-                department: 'Finanzas',
-                position: 'Contadora Senior',
-                salary: encryptSalary(2500),
-                password,
-                identityCard: '1799999999',
-                birthDate: new Date('1985-05-20'),
-                hireDate: new Date('2019-01-15'),
-                isActive: true,
-                address: 'Av. Gran Colombia, Quito',
-                phone: '0988888888',
-                civilStatus: 'Casada',
-                contractType: 'Indefinido',
-                bankName: encrypt('Banco Guayaquil'),
-                accountNumber: encrypt('9988776655'),
-                accountType: 'Corriente',
-                vacationDays: 15,
-            }
-        });
-        console.log('✅ Contabilidad: contabilidad@emplifi.com / Emplifi2025!');
-    } catch (e) {
-        console.log('⚠️ Accountant creation failed: ' + e.message);
+    // 3. Crear Choferes
+    const drivers = [
+        {
+            firstName: 'Felipe',
+            lastName: 'Castillo',
+            email: 'felipe.castillo@emplifi.com',
+            identityCard: '1790123456',
+            phone: '0919012345',
+            address: 'Av. Colón E4-60, Quito',
+        },
+        {
+            firstName: 'Kevin',
+            lastName: 'Arismendi',
+            email: 'kevin.arismendi@emplifi.com',
+            identityCard: '1799988877',
+            phone: '0999888777',
+            address: 'Av. El Inca, Quito',
+        },
+        {
+            firstName: 'Carlos',
+            lastName: 'Conductor',
+            email: 'chofer@emplifi.com',
+            identityCard: '1799988776',
+            phone: '0998765432',
+            address: 'Av. Maldonado, Quito',
+        }
+    ];
+
+    for (const dr of drivers) {
+        try {
+            await prisma.employee.upsert({
+                where: { email: dr.email },
+                update: { password, role: 'driver' },
+                create: {
+                    firstName: dr.firstName,
+                    lastName: dr.lastName,
+                    email: dr.email,
+                    role: 'driver',
+                    password,
+                    identityCard: dr.identityCard,
+                    phone: dr.phone,
+                    address: dr.address,
+                    isActive: true,
+                    trackingConsent: true,
+                }
+            });
+            console.log(`✅ Chofer: ${dr.email} / Emplifi2025!`);
+        } catch (e) {
+            console.error(`⚠️ Error al crear chofer ${dr.email}: ${e.message}`);
+        }
     }
 
-    // ── Emprendedor ──────────────────────────────────────────────────────────
-    let entrepreneur;
-    try {
-        entrepreneur = await prisma.employee.upsert({
-            where: { email: 'emprendedor@emplifi.com' },
-            update: { password },
-            create: {
-                firstName: 'Carlos',
-                lastName: 'Emprendedor',
-                email: 'emprendedor@emplifi.com',
-                role: 'entrepreneur',
-                department: 'Innovación',
-                position: 'Gestor de Incuadora',
-                salary: encryptSalary(2800),
-                password,
-                identityCard: '1788888888',
-                birthDate: new Date('1988-08-08'),
-                hireDate: new Date('2023-01-01'),
-                isActive: true,
-                address: 'Cumbayá, Quito',
-                phone: '0977777777',
-                civilStatus: 'Soltero',
-                contractType: 'Indefinido',
-                bankName: encrypt('Banco del Pacífico'),
-                accountNumber: encrypt('1122334455'),
-                accountType: 'Ahorros',
-                vacationDays: 15,
-            }
-        });
-        console.log('✅ Emprendimiento: emprendedor@emplifi.com / Emplifi2025!');
-    } catch (e) {
-        console.log('⚠️ Entrepreneur creation failed: ' + e.message);
-    }
-
-    // ── System Settings ───────────────────────────────────────────────────────
+    // 4. Configuración del sistema
     try {
         await prisma.systemSetting.upsert({
             where: { id: 'default' },
@@ -388,14 +130,13 @@ export async function seedUsers(prisma) {
             create: {
                 id: 'default',
                 maintenanceMode: false,
-                biometricEnabled: false,
                 maintenanceMessage: 'El sistema estará en mantenimiento brevemente.',
             }
         });
         console.log('✅ System Settings configurados');
     } catch (e) {
-        console.log('⚠️ System Settings failed: ' + e.message);
+        console.error('⚠️ System Settings failed: ' + e.message);
     }
 
-    return { admin, employees };
+    return { admin };
 }

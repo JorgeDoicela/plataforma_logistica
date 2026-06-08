@@ -1,5 +1,5 @@
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { adminModules, employeeModules, accountingModules, entrepreneurModules } from '../../constants/modules';
+import { adminModules, employeeModules, accountingModules, entrepreneurModules, driverModules } from '../../constants/modules';
 import logoEmplifi from '../../assets/images/logo_emplifi.png';
 
 const Sidebar = ({ user, onLogout, onClose }) => {
@@ -10,6 +10,8 @@ const Sidebar = ({ user, onLogout, onClose }) => {
     const getModules = () => {
         switch (user?.role) {
             case 'admin': return adminModules;
+            case 'operator': return adminModules;
+            case 'driver': return driverModules;
             case 'accounting': return accountingModules;
             case 'entrepreneur': return entrepreneurModules;
             default: return employeeModules;
@@ -19,9 +21,11 @@ const Sidebar = ({ user, onLogout, onClose }) => {
     const getRoleLabel = () => {
         switch (user?.role) {
             case 'admin': return 'Administrador';
+            case 'operator': return 'Operador Logístico';
+            case 'driver': return 'Conductor / Chofer';
             case 'accounting': return 'Contabilidad';
             case 'entrepreneur': return 'Emprendedor';
-            default: return 'Personal (V2)';
+            default: return 'Personal';
         }
     };
 
