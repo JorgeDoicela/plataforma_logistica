@@ -34,7 +34,7 @@ const Sidebar = ({ user, onLogout, onClose }) => {
     return (
         <aside className="h-full w-full bg-white border-r border-slate-200 flex flex-col text-slate-600 shadow-sm transition-all duration-300">
             <div className="p-6 flex items-center justify-between">
-                <Link to={user?.role === 'employee' ? '/empleado' : '/admin'} className="cursor-pointer">
+                <Link to={user?.role === 'driver' ? '/driver/dashboard' : (user?.role === 'employee' ? '/empleado' : '/admin')} className="cursor-pointer">
                     <img src={logoEmplifi} alt="EMPLIFI" className="h-10 w-auto object-contain hover:opacity-80 transition-opacity" />
                 </Link>
                 {onClose && (

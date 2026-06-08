@@ -21,6 +21,7 @@ const DispatchesPage = () => {
     // Modals
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [showDetailModal, setShowDetailModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
     const [selectedDispatch, setSelectedDispatch] = useState(null);
 
     // Form inputs
@@ -31,6 +32,12 @@ const DispatchesPage = () => {
     const [observations, setObservations] = useState('');
     const [boxCount, setBoxCount] = useState(10);
     const [submitting, setSubmitting] = useState(false);
+
+    // Edit inputs
+    const [editFarmId, setEditFarmId] = useState('');
+    const [editDestinationId, setEditDestinationId] = useState('');
+    const [editDate, setEditDate] = useState('');
+    const [editObservations, setEditObservations] = useState('');
 
     // Fetch lists
     const loadDispatches = async () => {
@@ -108,6 +115,35 @@ const DispatchesPage = () => {
         } catch (error) {
             console.error("Create dispatch error:", error);
             toast.error(error.message || "Error al crear el despacho");
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const handleEdit = async (e) => {
+        e.preventDefault();
+        if (!editFarmId || !editDestinationId || !editDate) {
+            toast.error("Por favor completa los campos requeridos");
+            return;
+        }
+
+        setSubmitting(true);
+        try {
+            const res = await logisticsService.updateDispatch(selectedDispatch.id, {
+                farmId: editFarmId,
+                destinationId: editDestinationId,
+                date: editDate,
+                observations: editObservations
+            });
+
+            if (res.success) {
+                toast.success("Despacho actualizado exitosamente");
+                setShowEditModal(false);
+                loadDispatches();
+            }
+        } catch (error) {
+            console.error("Update dispatch error:", error);
+            toast.error(error.message || "Error al actualizar el despacho");
         } finally {
             setSubmitting(false);
         }
@@ -297,13 +333,31 @@ const DispatchesPage = () => {
                                             </span>
                                         </td>
                                         <td className="py-4 px-6 text-center">
-                                            <button
-                                                onClick={() => viewDetails(disp.id)}
-                                                className="p-2 text-indigo-600 hover:text-indigo-800 rounded-lg hover:bg-indigo-50 transition-all"
-                                                title="Ver detalle"
-                                            >
-                                                <FiInfo className="text-base" />
-                                            </button>
+                                            <div className="flex justify-center items-center gap-1">
+                                                <button
+                                                    onClick={() => viewDetails(disp.id)}
+                                                    className="p-2 text-indigo-600 hover:text-indigo-800 rounded-lg hover:bg-indigo-50 transition-all"
+                                                    title="Ver detalle"
+                                                >
+                                                    <FiInfo className="text-base" />
+                                                </button>
+                                                {disp.status !== 'Despachado' && disp.status !== 'Finalizado' && (
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedDispatch(disp);
+                                                            setEditFarmId(disp.farmId);
+                                                            setEditDestinationId(disp.destinationId);
+                                                            setEditDate(disp.date ? new Date(disp.date).toISOString().split('T')[0] : '');
+                                                            setEditObservations(disp.observations || '');
+                                                            setShowEditModal(true);
+                                                        }}
+                                                        className="p-2 text-amber-600 hover:text-amber-800 rounded-lg hover:bg-amber-50 transition-all"
+                                                        title="Editar despacho"
+                                                    >
+                                                        <FiEdit3 className="text-base" />
+                                                    </button>
+                                                )}
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}
@@ -494,6 +548,91 @@ const DispatchesPage = () => {
                                 Cerrar
                             </button>
                         </div>
+                    </div>
+                </div>
+            )}
+            {/* Edit Modal */}
+            {showEditModal && selectedDispatch && (
+                <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg border border-slate-100 overflow-hidden max-h-[90vh] flex flex-col">
+                        <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+                            <div>
+                                <h3 className="text-lg font-bold text-slate-950">Editar Despacho</h3>
+                                <p className="text-xs text-indigo-600 font-semibold">{selectedDispatch.dispatchCode}</p>
+                            </div>
+                            <button onClick={() => setShowEditModal(false)} className="text-slate-400 hover:text-slate-600"><FiX className="text-xl" /></button>
+                        </div>
+                        <form onSubmit={handleEdit} className="p-6 space-y-4 overflow-y-auto flex-1">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-600 mb-1">Finca Origen*</label>
+                                    <select
+                                        value={editFarmId}
+                                        onChange={(e) => setEditFarmId(e.target.value)}
+                                        className="w-full text-sm rounded-lg border-slate-200"
+                                        required
+                                    >
+                                        <option value="">Selecciona...</option>
+                                        {farms.map((f) => (
+                                            <option key={f.id} value={f.id}>{f.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-600 mb-1">Destino*</label>
+                                    <select
+                                        value={editDestinationId}
+                                        onChange={(e) => setEditDestinationId(e.target.value)}
+                                        className="w-full text-sm rounded-lg border-slate-200"
+                                        required
+                                    >
+                                        <option value="">Selecciona...</option>
+                                        {destinations.map((d) => (
+                                            <option key={d.id} value={d.id}>{d.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-semibold text-slate-600 mb-1">Fecha Despacho*</label>
+                                <input
+                                    type="date"
+                                    value={editDate}
+                                    onChange={(e) => setEditDate(e.target.value)}
+                                    className="w-full text-sm rounded-lg border-slate-200"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-semibold text-slate-600 mb-1">Observaciones</label>
+                                <textarea
+                                    value={editObservations}
+                                    onChange={(e) => setEditObservations(e.target.value)}
+                                    placeholder="Detalles sobre carga de frío, transportista, etc."
+                                    rows="3"
+                                    className="w-full text-sm rounded-lg border-slate-200"
+                                />
+                            </div>
+
+                            <div className="pt-4 border-t border-slate-100 flex justify-end gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowEditModal(false)}
+                                    className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg text-sm font-semibold"
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={submitting}
+                                    className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors text-sm shadow-sm flex items-center gap-1.5"
+                                >
+                                    {submitting ? 'Guardando...' : 'Guardar Cambios'}
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}

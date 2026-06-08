@@ -52,10 +52,13 @@ function Login({ onLogin }) {
             localStorage.setItem('token', data.token);
 
             // Redirección automática basada en el rol
-            if (['admin', 'accounting', 'entrepreneur'].includes(data.data.role)) {
+            const role = data.data.role;
+            if (['admin', 'operator', 'accounting', 'entrepreneur'].includes(role)) {
                 navigate('/admin');
+            } else if (role === 'driver') {
+                navigate('/driver/dashboard');
             } else {
-                navigate('/empleado');
+                navigate('/admin');
             }
         } catch (err) {
             setError(err.message);
@@ -121,10 +124,13 @@ function Login({ onLogin }) {
             });
             localStorage.setItem('token', verifyData.token);
 
-            if (['admin', 'accounting', 'entrepreneur'].includes(verifyData.data.role)) {
+            const role = verifyData.data.role;
+            if (['admin', 'operator', 'accounting', 'entrepreneur'].includes(role)) {
                 navigate('/admin');
+            } else if (role === 'driver') {
+                navigate('/driver/dashboard');
             } else {
-                navigate('/empleado');
+                navigate('/admin');
             }
 
         } catch (err) {
