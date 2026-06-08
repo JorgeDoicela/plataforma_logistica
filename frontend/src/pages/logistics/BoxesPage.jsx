@@ -131,7 +131,10 @@ const BoxesPage = () => {
             </head>
             <body>
                 <div class="title">ISTPET LOGISTICS</div>
-                <div class="qr">[QR CODE]<br/>${box.qrCode || box.boxCode}</div>
+                <div style="margin: 15px auto; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(box.qrCode || box.boxCode)}" alt="QR Code" style="width: 120px; height: 120px;" />
+                    <div style="font-size: 10px; font-family: monospace; margin-top: 5px;">${box.qrCode || box.boxCode}</div>
+                </div>
                 <div class="info">
                     <div><strong>CAJA ID:</strong> ${box.boxCode}</div>
                     <div><strong>DESPACHO:</strong> ${dispCode}</div>
@@ -177,7 +180,10 @@ const BoxesPage = () => {
             htmlContent += `
                 <div class="label-card">
                     <div class="title">ISTPET LOGISTICS</div>
-                    <div class="qr">[QR CODE]<br/>${box.qrCode || box.boxCode}</div>
+                    <div style="margin: 15px auto; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(box.qrCode || box.boxCode)}" alt="QR Code" style="width: 120px; height: 120px;" />
+                        <div style="font-size: 10px; font-family: monospace; margin-top: 5px;">${box.qrCode || box.boxCode}</div>
+                    </div>
                     <div class="info">
                         <div><strong>CAJA ID:</strong> ${box.boxCode}</div>
                         <div><strong>DESPACHO:</strong> ${dispCode}</div>

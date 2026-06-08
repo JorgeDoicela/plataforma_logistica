@@ -389,6 +389,31 @@ const DriverTripDetails = ({ user }) => {
                     ))}
                 </div>
             </div>
+
+            {/* Travel History Timeline */}
+            {trip.history && trip.history.length > 0 && (
+                <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
+                    <h3 className="text-sm font-bold text-slate-900">Historial del Recorrido</h3>
+                    <div className="space-y-3 relative before:absolute before:inset-0 before:left-2 before:w-0.5 before:bg-slate-100">
+                        {trip.history.map((h, idx) => (
+                            <div key={h.id || idx} className="flex gap-3 text-xs relative pl-6">
+                                <div className={`absolute left-0.5 top-1 w-3 h-3 rounded-full border-2 bg-white
+                                    ${idx === 0 ? 'border-indigo-600 ring-4 ring-indigo-50 animate-pulse' : 'border-slate-300'}`}>
+                                </div>
+                                <div className="space-y-0.5">
+                                    <div className="flex items-center gap-2">
+                                        <span className="font-bold text-slate-800">{h.status}</span>
+                                        <span className="text-[10px] text-slate-400 font-medium">
+                                            {new Date(h.changedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        </span>
+                                    </div>
+                                    {h.notes && <p className="text-slate-500 italic leading-snug">{h.notes}</p>}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

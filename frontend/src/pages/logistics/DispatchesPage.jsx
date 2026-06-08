@@ -185,7 +185,10 @@ const DispatchesPage = () => {
             </head>
             <body>
                 <div class="title">CAJA DE FLORES</div>
-                <div class="qr">[CÓDIGO QR]<br/>${box.qrCode || box.boxCode}</div>
+                <div style="margin: 15px auto; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(box.qrCode || box.boxCode)}" alt="QR Code" style="width: 120px; height: 120px;" />
+                    <div style="font-size: 10px; font-family: monospace; margin-top: 5px;">${box.qrCode || box.boxCode}</div>
+                </div>
                 <div class="details">
                     <div><strong>Código Caja:</strong> ${box.boxCode}</div>
                     <div><strong>Despacho:</strong> ${selectedDispatch?.dispatchCode}</div>
