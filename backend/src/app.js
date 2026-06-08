@@ -44,10 +44,13 @@ const corsOptions = {
             'http://localhost:5175',  // Vite dev fallback 2
             'http://localhost:3000',  // Alternativa
             'https://recursoshumanos-phi.vercel.app', // Vercel Frontend
+            'https://plataforma-logistica-ebon.vercel.app', // Vercel Plataforma Logística
             process.env.FRONTEND_URL, // Producción
         ].filter(Boolean); // Eliminar undefined
 
-        if (allowedOrigins.indexOf(origin) !== -1) {
+        const isVercelPreview = origin.startsWith('https://plataforma-logistica-') && origin.endsWith('.vercel.app');
+
+        if (allowedOrigins.indexOf(origin) !== -1 || isVercelPreview) {
             callback(null, true);
         } else {
             console.error(`[CORS] Blogged origin: ${origin}`);
