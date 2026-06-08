@@ -75,10 +75,18 @@ const MonitoringPage = () => {
         }
     };
 
+    const [isSpikeEnabled, setIsSpikeEnabled] = useState(false);
+
     useEffect(() => {
         if (selectedTripId) {
             setLoading(true);
             fetchTripDetails(selectedTripId).finally(() => setLoading(false));
+
+            logisticsService.getTripSpikeStatus(selectedTripId)
+                .then(res => {
+                    if (res.success) setIsSpikeEnabled(res.enabled);
+                })
+                .catch(err => console.error("Error fetching spike status", err));
 
             // Poll trip details every 12 seconds for live telemetry tracking
             const interval = setInterval(() => {
@@ -100,6 +108,53 @@ const MonitoringPage = () => {
     const handleTripChange = (e) => {
         setSelectedTripId(e.target.value);
         setTripDetail(null);
+        setIsSpikeEnabled(false);
+    };
+
+    const handleToggleSpike = async () => {
+        if (!selectedTripId) return;
+        try {
+            const res = await logisticsService.toggleTripSpike(selectedTripId, !isSpikeEnabled);
+            if (res.success) {
+                setIsSpikeEnabled(res.enabled);
+                toast.success(res.enabled ? "Simulación de pico térmico activada." : "Simulación de pico térmico desactivada.");
+                fetchTripDetails(selectedTripId);
+            }
+        } catch (error) {
+            toast.error("Error al configurar la simulación de pico térmico.");
+            console.error(error);
+        }
+    };
+
+    const handleExportCSV = () => {
+        if (!tripDetail || !tripDetail.temperatureReadings || tripDetail.temperatureReadings.length === 0) {
+            toast.error("No hay lecturas térmicas para exportar.");
+            return;
+        }
+
+        // Header
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Fecha y Hora,Temperatura (C),Latitud,Longitud,Estado del Viaje\n";
+
+        // Rows
+        tripDetail.temperatureReadings.forEach((temp, idx) => {
+            const dateStr = new Date(temp.timestamp).toLocaleString();
+            const tempVal = temp.temperature;
+            const gps = tripDetail.gpsPositions[idx];
+            const lat = gps ? gps.latitude.toFixed(6) : "";
+            const lng = gps ? gps.longitude.toFixed(6) : "";
+            const status = tripDetail.status;
+            csvContent += `"${dateStr}",${tempVal},${lat},${lng},"${status}"\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `Reporte_Termico_${tripDetail.dispatch?.dispatchCode || 'viaje'}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        toast.success("Historial térmico exportado con éxito.");
     };
 
     // Calculate details
@@ -124,25 +179,57 @@ const MonitoringPage = () => {
     return (
         <div className="p-6 space-y-6 max-w-7xl mx-auto">
             {/* Header / Selector */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900">Monitoreo Satelital GPS & Frío</h1>
                     <p className="text-slate-500 text-sm">Monitorea en tiempo real la ubicación mediante Starlink y el sensor de temperatura.</p>
                 </div>
-                <div className="flex items-center gap-2">
-                    <label className="text-sm font-semibold text-slate-600 shrink-0">Seleccionar Viaje:</label>
-                    <select
-                        value={selectedTripId}
-                        onChange={handleTripChange}
-                        className="text-sm rounded-lg border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 min-w-[250px]"
-                    >
-                        <option value="">-- Selecciona un viaje --</option>
-                        {trips.map((t) => (
-                            <option key={t.id} value={t.id}>
-                                {t.dispatch?.dispatchCode} ({t.status}) - {t.driver?.firstName}
-                            </option>
-                        ))}
-                    </select>
+                <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex items-center gap-2">
+                        <label className="text-sm font-semibold text-slate-600 shrink-0">Seleccionar Viaje:</label>
+                        <select
+                            value={selectedTripId}
+                            onChange={handleTripChange}
+                            className="text-sm rounded-lg border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 min-w-[220px]"
+                        >
+                            <option value="">-- Selecciona un viaje --</option>
+                            {trips.map((t) => (
+                                <option key={t.id} value={t.id}>
+                                    {t.dispatch?.dispatchCode} ({t.status}) - {t.driver?.firstName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {tripDetail && (
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={handleExportCSV}
+                                className="px-3.5 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm transition-all duration-200 flex items-center gap-1.5"
+                                title="Exportar reporte térmico y coordenadas"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Exportar Historial
+                            </button>
+
+                            <button
+                                onClick={handleToggleSpike}
+                                className={`px-3.5 py-2 text-xs font-semibold rounded-lg shadow-sm transition-all duration-200 flex items-center gap-1.5 text-white ${
+                                    isSpikeEnabled 
+                                        ? 'bg-rose-600 hover:bg-rose-700 animate-pulse' 
+                                        : 'bg-indigo-600 hover:bg-indigo-700'
+                                }`}
+                                title={isSpikeEnabled ? 'Desactivar simulación de pico térmico' : 'Simular un pico de temperatura fuera del rango óptimo'}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                                {isSpikeEnabled ? 'Detener Pico Térmico' : 'Simular Pico Térmico'}
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
 

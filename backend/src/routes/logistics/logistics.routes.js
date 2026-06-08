@@ -3,6 +3,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { authenticate, authorize } from '../../middleware/auth.middleware.js';
+import { activeSpikes } from '../../jobs/logisticsTelemetryJob.js';
 import {
     getFarms, getDestinations,
     getDispatches, getDispatchById, createDispatch, updateDispatch, updateDispatchStatus,
@@ -96,5 +97,33 @@ router.post('/documents/upload', upload.single('file'), uploadLogisticDocument);
 // ==========================================
 router.get('/dashboard/stats', getDashboardStats);
 router.get('/reports/data', getReportData);
+
+// ==========================================
+// 10. SIMULADOR DE PICOS DE TEMPERATURA (VALOR AGREGADO)
+// ==========================================
+router.get('/trips/:id/spike', authorize(['admin', 'operator']), (req, res) => {
+    const { id } = req.params;
+    res.status(200).json({
+        success: true,
+        enabled: !!activeSpikes[id]
+    });
+});
+
+router.post('/trips/:id/spike', authorize(['admin', 'operator']), (req, res) => {
+    const { id } = req.params;
+    const { enable } = req.body;
+    
+    if (enable) {
+        activeSpikes[id] = true;
+    } else {
+        delete activeSpikes[id];
+    }
+    
+    res.status(200).json({ 
+        success: true, 
+        message: `Simulación de pico térmico ${enable ? 'activada' : 'desactivada'} para el viaje.`,
+        enabled: !!activeSpikes[id]
+    });
+});
 
 export default router;

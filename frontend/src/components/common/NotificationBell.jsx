@@ -53,7 +53,9 @@ const NotificationBell = () => {
 
         // Navigation Logic
         setIsOpen(false);
-        if (notification.type === 'CONTRACT_EXPIRATION' && notification.relatedEntityId) {
+        if (notification.type === 'COLD_CHAIN_ALERT') {
+            navigate(`/admin/monitoring?tripId=${notification.relatedEntityId}`);
+        } else if (notification.type === 'CONTRACT_EXPIRATION' && notification.relatedEntityId) {
             navigate('/admin/contracts/expiring');
         } else if (notification.type === 'EVALUATION_REMINDER' || notification.type === 'EVALUATION_EXPIRED' || notification.type === 'EVALUATION_ASSIGNED') {
             // For now, redirect to employees list or assessments if page exists.
@@ -144,7 +146,14 @@ const NotificationBell = () => {
                                         className={`group p-4 hover:bg-white/5 cursor-pointer transition-colors relative ${!notification.isRead ? 'bg-blue-500/5' : ''}`}
                                     >
                                         <div className="flex gap-4">
-                                            <div className="flex-shrink-0 mt-1">
+                                                {/* Cold Chain Alerts (Red/Rose Pulse) */}
+                                                {notification.type === 'COLD_CHAIN_ALERT' && (
+                                                    <div className="w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center animate-pulse">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                                        </svg>
+                                                    </div>
+                                                )}
                                                 {/* Payroll Alerts (Green) */}
                                                 {(notification.type && notification.type.startsWith && notification.type.startsWith('PAYROLL_')) && (
                                                     <div className="w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center">

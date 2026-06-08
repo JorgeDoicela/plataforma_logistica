@@ -112,6 +112,16 @@ const getReportData = async (filters = {}) => {
     return response.data;
 };
 
+const getTripSpikeStatus = async (id) => {
+    const response = await api.get(`/logistics/trips/${id}/spike`);
+    return response.data;
+};
+
+const toggleTripSpike = async (id, enable) => {
+    const response = await api.post(`/logistics/trips/${id}/spike`, { enable });
+    return response.data;
+};
+
 export default {
     getFarms,
     getDestinations,
@@ -134,5 +144,7 @@ export default {
     recordTelemetry,
     uploadDocument,
     getDashboardStats,
-    getReportData
+    getReportData,
+    getTripSpikeStatus,
+    toggleTripSpike
 };
