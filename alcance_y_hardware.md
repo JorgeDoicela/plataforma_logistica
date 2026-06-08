@@ -166,6 +166,14 @@ Como incentivo exclusivo por la adjudicación del proyecto, **se desarrollarán 
 3. **Módulo de Mantenimiento de Flota y Calibración de Sensores:**
    * Planificador con avisos automáticos sobre fechas de calibración de las sondas de temperatura DS18B20 y mantenimiento preventivo de los vehículos de la flota.
 
+4. **Copias de Seguridad Automáticas (Backups del Sistema):**
+   * Automatización de copias de seguridad recurrentes tanto de la base de datos PostgreSQL como de los documentos cargados en el servidor, protegiendo la información de la operación ante cualquier eventualidad o pérdida accidental de datos.
+
+5. **Modo Offline en la Aplicación Móvil PWA (Soporte sin Cobertura Celular):**
+   * Habilitación de la capacidad de operar sin conexión a internet en la aplicación de los conductores. Si el camión transita por zonas sin cobertura o túneles de la sierra ecuatoriana, el chofer podrá seguir visualizando su viaje activo, registrando el escaneo de cajas QR y digitando reportes de temperatura.
+   * **Sincronización Inteligente en Caliente:** Todos los escaneos e ingresos se guardan localmente en la memoria del navegador (IndexedDB). Al recuperar la señal de datos, la PWA sincronizará y subirá la información al servidor automáticamente y en orden cronológico.
+   * *(Nota lógica: Al no haber internet durante la pérdida de señal, no se transmitirá la ubicación GPS en tiempo real para el panel del administrador, pero todo el trayecto y los eventos se reconstruirán e informarán inmediatamente al recuperar conexión).*
+
 ---
 
 ## Paquete de Gestión Empresarial Incluido: Suite Completa de RR.HH. y Administración (Sin Costo Adicional)
@@ -287,11 +295,27 @@ Este módulo es especialmente valioso para el control de conductores, despachado
 
 ---
 
-## Requisitos de Servidor e Infraestructura Recomendada (AWS Lightsail)
+## Propiedad Intelectual, Licenciamiento y Cumplimiento Legal
 
-Para garantizar la soberanía de la base de datos y la automatización de backups, se ha dimensionado el siguiente servidor:
+### Propiedad del Código Fuente y Modelo de Entrega
+* **Propiedad Intelectual:** El presente proyecto contempla el despliegue y la configuración operativa de la plataforma en el servidor del cliente (AWS Lightsail) bajo licencia de uso, mas **no incluye la transferencia, propiedad ni entrega del código fuente original** del sistema.
+* **Formato de Instalación Seguro:** Para garantizar la protección de la propiedad intelectual del desarrollo, el software será instalado y configurado en el servidor del cliente en formato de producción optimizado, utilizando código compilado/ofuscado y/o mediante contenedores **Docker** cerrados y preconfigurados.
+* **Autonomía Total sin Tocar Código:** El cliente no requiere acceder al código fuente para ninguna tarea de gestión u operación. El panel administrativo cuenta con módulos e interfaces visuales completas para que el administrador gestione de forma 100% autónoma: usuarios, roles, empleados, conductores, vehículos, fincas, destinos, geocercas, horarios, turnos y configuraciones de seguridad global sin depender del equipo técnico.
+
+### Cumplimiento con la Ley de Protección de Datos Personales (LOPDP — Ecuador)
+El sistema está diseñado bajo estándares de seguridad informática y cumple con los requerimientos de la **Ley Orgánica de Protección de Datos Personales** vigente en Ecuador, evitando cualquier riesgo de contingencia legal para su empresa:
+* **Consentimiento Explícito:** La aplicación móvil/PWA para conductores y el digitalizador de asistencia incluyen flujos de consentimiento explícito e informado para el tratamiento de datos y geolocalización.
+* **Minimización de Datos Biométricos:** La autenticación biométrica de última generación (FIDO2/WebAuthn) se procesa localmente en el chip de seguridad del dispositivo del usuario (celular o computador). El servidor **nunca** almacena huellas digitales o rostros crudos, cumpliendo estrictamente con la ley.
+* **Trazabilidad y Auditoría:** Registro inalterable de accesos y acciones en la base de datos (logs de auditoría con marcas de tiempo e IPs de origen) para auditorías de cumplimiento.
+
+---
+
+## Requisitos de Servidor, Dominio e Infraestructura Recomendada
+
+Para garantizar la soberanía de la base de datos, la seguridad en la navegación y la automatización de backups, se ha dimensionado la siguiente infraestructura:
 
 * **Plan AWS Lightsail Seleccionado:** **$12 USD / mes** (2 GB RAM, 2 vCPUs, 60 GB SSD, 3 TB de transferencia mensual).
+* **Dominio Corporativo (.com):** **$10.46 USD / año** (adquirido a través de Cloudflare; incluye de forma nativa certificado de seguridad SSL de por vida y encriptación de datos de extremo a extremo configurada bajo el modo **SSL/TLS Estricto (Full / Strict)** de Cloudflare para máxima protección del tráfico y seguridad proxy contra ataques).
 * **Soberanía Absoluta de Datos:** Base de datos PostgreSQL instalada en una instancia privada dedicada, de propiedad exclusiva del cliente. Sin compartir infraestructura con terceros.
 * **Backups Automáticos Diarios:** Snapshots programados para recuperación inmediata ante incidentes o corrupción de datos.
 * **Capacidad Dual de Procesamiento:** Las 2 vCPUs permiten recibir y procesar tramas de telemetría de los camiones en paralelo sin comprometer el rendimiento del panel administrativo.
@@ -308,35 +332,40 @@ Para cumplir el requerimiento de temperatura y rastreo en tiempo real de forma a
 | Rastreador GPS | **Teltonika FMB120** | $35 – $45 USD por vehículo |
 | Sensor de Temperatura | **Sonda DS18B20** (acero inoxidable, cable 1-Wire, 3–5 m) | $4 – $7 USD por vehículo |
 | Conectividad celular | **Chip M2M** GPRS/TCP (cualquier operador local) | $3 – $5 USD/mes por vehículo |
-| Instalación física | Cableado cabina → furgón refrigerado | Variable según taller |
+| Instalación física | Cableado cabina → furgón refrigerado | $25 – $40 USD por vehículo (estimado) |
+
+> [!TIP]
+> **Alternativa Flexible de Bajo Costo (Rastreo mediante Celular del Conductor — Costo $0):**
+> Si se desea **eliminar la inversión inicial en hardware y los pagos de mensualidades de chips de datos**, la plataforma está diseñada para permitir el monitoreo utilizando el chip GPS del teléfono celular del propio chofer a través de la aplicación móvil PWA (ya programada y operativa).
+> * **Ahorro Absoluto:** $0 de costo en equipos GPS, $0 de costo en talleres de instalación y $0 en mensualidades de conectividad para el vehículo.
+> * **Consumo Mínimo de Datos:** Sí requiere internet móvil activo en el celular para transmitir la ubicación al servidor, pero el consumo es extremadamente bajo (menos de 2 MB al mes por conductor, equivalente a enviar solo un par de fotos por WhatsApp). Funciona con cualquier plan básico o recarga prepago común.
+> * **Control de Temperatura:** Bajo esta modalidad, el conductor puede registrar manualmente el valor de temperatura reportado por el termómetro de cabina en los puntos de control, o a futuro se puede integrar con sensores de temperatura portátiles inalámbricos vía Bluetooth (BLE).
+> * **Decisión del Cliente:** El software ya soporta ambas arquitecturas de rastreo. Queda a completa elección del cliente qué modelo implementar para su flota.
 
 ---
 
-## Exclusiones del Alcance Inicial y Estado de Compatibilidad
+## Resumen Consolidado de Costos Estimados (Infraestructura y Hardware)
 
-* **Dispositivos GPS:** **Excluido** de la cotización de software. Adquisición a cargo del cliente.
-* **Instalación de GPS y sensores:** **Excluido** de la cotización de software. Instalación física y cableado a cargo del cliente.
-* **Chips o conectividad celular M2M:** **Excluido** de la cotización de software. Plan mensual contratado por el cliente con su operador de telefonía.
-* **Mensualidad de plataformas GPS de terceros:** **No aplica.** El sistema es soberano: no requiere pagos a plataformas externas de monitoreo vehicular.
-* **Sensores de temperatura:** **¡COMPATIBILIDAD INTEGRADA SIN COSTO!** El software ya está preparado para almacenar, graficar y generar alarmas con las lecturas de los sensores físicos. La exclusión aplica únicamente a la adquisición del sensor DS18B20 físico.
-* **Alarmas automáticas por temperatura:** **¡INTEGRADO Y OPERATIVO SIN COSTO!** El software genera alertas automáticas in-app y notificaciones WebSocket de forma nativa. La exclusión aplica únicamente a servicios externos de SMS masivo de pago.
-* **Lectores láser industriales USB:** **¡COMPATIBILIDAD NATIVA!** Cualquier lector industrial con emulación de teclado USB (HID) funciona sin configuración adicional.
-* **Aplicación móvil nativa (Play Store / App Store):** **Excluido** como APK/IPA publicado en tienda. Se provee la interfaz PWA responsiva para conductores, ya programada y operativa, que funciona desde cualquier navegador móvil.
-* **Inteligencia Artificial u optimización de rutas:** **Excluido** del alcance de este proyecto.
-* **Integración con bus CAN del motor** (revoluciones, consumo de combustible exacto): **Excluido.**
-* **Módulos adicionales no descritos expresamente en este documento:** **Excluido.**
+Para facilitar la planificación financiera del proyecto, a continuación se detalla el presupuesto consolidado de la infraestructura en la nube y el hardware de telemetría (valores referenciales excluidos del costo de desarrollo del software):
 
----
+### 1. Costos de Infraestructura Global (Fijos)
+Estos valores sostienen la plataforma administrativa web y la base de datos de manera centralizada.
 
-## Propiedad Intelectual, Licenciamiento y Cumplimiento Legal
+| Concepto | Proveedor | Frecuencia de Pago | Costo Estimado (USD) |
+|---|---|---|---|
+| **Servidor VPS (AWS Lightsail)** | Amazon Web Services | Mensual | **$12.00 USD / mes** |
+| **Dominio Corporativo (.com)** | Cloudflare | Anual | **$10.46 USD / año** |
+| **Seguridad SSL y Proxy DNS** | Cloudflare | N/A | **$0.00 USD (Gratis de por vida)** |
+| **Total Anual de Plataforma (Año 1)** | AWS + Cloudflare | Anualizado | **$154.46 USD** |
 
-### Propiedad del Código Fuente y Modelo de Entrega
-* **Propiedad Intelectual:** El presente proyecto contempla el despliegue y la configuración operativa de la plataforma en el servidor del cliente (AWS Lightsail) bajo licencia de uso, mas **no incluye la transferencia, propiedad ni entrega del código fuente original** del sistema.
-* **Formato de Instalación Seguro:** Para garantizar la protección de la propiedad intelectual del desarrollo, el software será instalado y configurado en el servidor del cliente en formato de producción optimizado, utilizando código compilado/ofuscado y/o mediante contenedores **Docker** cerrados y preconfigurados.
-* **Autonomía Total sin Tocar Código:** El cliente no requiere acceder al código fuente para ninguna tarea de gestión u operación. El panel administrativo cuenta con módulos e interfaces visuales completas para que el administrador gestione de forma 100% autónoma: usuarios, roles, empleados, conductores, vehículos, fincas, destinos, geocercas, horarios, turnos y configuraciones de seguridad global sin depender del equipo técnico.
+### 2. Costos de Telemetría por Vehículo (Variables)
+Estos valores se aplican de forma individual por cada camión que se decida equipar con sensores de temperatura y ubicación satelital en tiempo real.
 
-### Cumplimiento con la Ley de Protección de Datos Personales (LOPDP — Ecuador)
-El sistema está diseñado bajo estándares de seguridad informática y cumple con los requerimientos de la **Ley Orgánica de Protección de Datos Personales** vigente en Ecuador, evitando cualquier riesgo de contingencia legal para su empresa:
-* **Consentimiento Explícito:** La aplicación móvil/PWA para conductores y el digitalizador de asistencia incluyen flujos de consentimiento explícito e informado para el tratamiento de datos y geolocalización.
-* **Minimización de Datos Biométricos:** La autenticación biométrica de última generación (FIDO2/WebAuthn) se procesa localmente en el chip de seguridad del dispositivo del usuario (celular o computador). El servidor **nunca** almacena huellas digitales o rostros crudos, cumpliendo estrictamente con la ley.
-* **Trazabilidad y Auditoría:** Registro inalterable de accesos y acciones en la base de datos (logs de auditoría con marcas de tiempo e IPs de origen) para auditorías de cumplimiento.
+| Componente / Concepto | Modelo Recomendado | Frecuencia de Pago | Costo Estimado (USD) |
+|---|---|---|---|
+| **Dispositivo GPS** | Teltonika FMB120 (Puerto 1-Wire) | Pago Único | $35.00 – $45.00 |
+| **Sensor de Temperatura** | Sonda digital DS18B20 (Acero) | Pago Único | $4.00 – $7.00 |
+| **Instalación Física** | Mano de obra (Taller automotriz) | Pago Único | $25.00 – $40.00 (Promedio) |
+| **Línea Celular M2M (Datos)** | Plan de Datos GPRS (Claro / Movistar) | Mensual | $3.00 – $5.00 / mes |
+| **Total Inversión Inicial (Por Camión)** | **Equipos + Instalación** | **Pago Único** | **$64.00 – $92.00** |
+| **Total Operativo Mensual (Por Camión)** | **Servicio de Datos Celulares** | **Mensual** | **$3.00 – $5.00 / mes** |
