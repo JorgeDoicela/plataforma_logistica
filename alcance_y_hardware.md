@@ -112,41 +112,40 @@ Esta etapa comprende el cierre funcional de la plataforma con reportes, indicado
   * **[x]** Acceso de consulta al operador logístico (no solo al administrador).
   * **[x]** Filtros de auditoría: por usuario, por acción, por entidad (Despacho, Viaje, Caja) y por rango de fechas.
   * **[x]** Registro de IP de origen en cada evento de auditoría.
-* **[ ] (Actividad Pendiente)** Capacitación básica de uso — Sesiones presenciales/virtuales con personal administrativo y choferes *(Pendiente coordinar fecha con EL CLIENTE)*.
 * **[x] (Programado y Operativo)** Registro de operadores, administradores y conductores en el sistema.
 * **[x] (Programado y Operativo)** Documentación técnica digital de uso provista.
 
 > **Criterio de aceptación de la etapa:**
-> La etapa se considerará cumplida cuando EL CLIENTE pueda operar el flujo completo: crear despacho → generar QR → escanear cajas → controlar viaje → monitorear temperatura/GPS → registrar salida y llegada → cargar documentos → visualizar dashboard → exportar reportes y revisar trazabilidad general. *(Estado actual: **CUMPLIDA Y PROBADA AL 100% (salvo capacitación)**)*
+> La etapa se considerará cumplida cuando EL CLIENTE pueda operar el flujo completo: crear despacho → generar QR → escanear cajas → controlar viaje → monitorear temperatura/GPS → registrar salida y llegada → cargar documentos → visualizar dashboard → exportar reportes y revisar trazabilidad general. *(Estado actual: **CUMPLIDA Y PROBADA AL 100%**)*
 
 ---
 
-## 🎁 Funciones Avanzadas Incluidas Completamente GRATIS (Valor Agregado de Fábrica)
+## Funciones Avanzadas Incluidas Completamente GRATIS (Valor Agregado de Fábrica)
 
-Con el fin de asegurar la adjudicación del proyecto y ofrecer una plataforma de primer nivel frente a cualquier competidor, **las siguientes características de nivel enterprise se incluyen 100% programadas y operativas, sin costo de desarrollo adicional:**
+Con el fin de asegurar la adjudicación del proyecto y ofrecer una plataforma de primer nivel, **las siguientes características de nivel enterprise se incluyen 100% programadas y operativas, sin costo de desarrollo adicional:**
 
-1. **🌡️ Alertas Automáticas de Ruptura de Cadena de Frío:**
+1. **Alertas Automáticas de Ruptura de Cadena de Frío:**
    * El motor de telemetría detecta en tiempo real cuando la temperatura supera el rango florícola óptimo (2°C – 8°C) y dispara **automáticamente** una notificación roja de pánico a todos los administradores y operadores logísticos activos.
    * Cuando la temperatura vuelve al rango normal, el sistema envía una notificación de normalización confirmando que la cadena de frío fue restaurada.
 
-2. **🔔 Sistema de Notificaciones en Tiempo Real (WebSocket):**
+2. **Sistema de Notificaciones en Tiempo Real (WebSocket):**
    * Las alertas se envían instantáneamente por WebSocket (Socket.io) sin necesidad de recargar la pantalla. La campana de notificaciones se actualiza en vivo con contador de no leídas.
    * Incluye notificaciones por correo electrónico transaccional para eventos críticos (contratos, alertas operativas).
 
-3. **📊 Exportador de Historial Completo a CSV/Excel y PDF:**
+3. **Exportador de Historial Completo a CSV/Excel y PDF:**
    * Descarga completa de registros de despachos, viajes y cajas en formato CSV compatible con Excel, con soporte para caracteres especiales (UTF-8 BOM).
    * Impresión a PDF directamente desde el navegador sin instalar software adicional.
 
-4. **🧪 Simulador Interactivo de Emergencias de Frío:**
+4. **Simulador Interactivo de Emergencias de Frío:**
    * Botón en el panel de monitoreo para forzar un pico de temperatura de prueba (9°C – 11.5°C) y verificar en vivo el comportamiento automático de las alertas. Permite al cliente validar la reacción del sistema antes de la operación real.
 
-5. **🔐 Autenticación Biométrica de Última Generación (WebAuthn / FIDO2):**
+5. **Autenticación Biométrica de Última Generación (WebAuthn / FIDO2):**
    * Registro e inicio de sesión seguros usando la huella digital o reconocimiento facial del usuario: **FaceID, TouchID, Windows Hello** — sin contraseñas escritas.
    * Las credenciales biométricas tienen validez de 90 días y se invalidan automáticamente si se detecta un intento de clonación (análisis de contadores de seguridad por autenticador).
    * Identificación del hardware autenticador (AAGUID) para trazabilidad del dispositivo usado en el login.
    * Habilitación/deshabilitación global de la biometría desde el panel de configuración del sistema.
 
-6. **⚙️ Panel de Configuración Global del Sistema:**
+6. **Panel de Configuración Global del Sistema:**
    * Modo mantenimiento con banner personalizable para usuarios (permite programar ventanas de actualización).
    * Control de acceso por IP permitida (whitelist de direcciones IP).
    * Configuración de radio de geocerca global y coordenadas del destino.
@@ -154,28 +153,25 @@ Con el fin de asegurar la adjudicación del proyecto y ofrecer una plataforma de
 
 ---
 
-## 🤝 Beneficios Adicionales por Adjudicación del Proyecto (Incentivos de Firma de Contrato)
+## Beneficios Adicionales por Adjudicación del Proyecto
 
-Como incentivo exclusivo por la adjudicación y firma de contrato, **se desarrollarán e integrarán sin costo de desarrollo adicional** las siguientes características avanzadas durante la fase de despliegue y puesta en marcha:
+Como incentivo exclusivo por la adjudicación del proyecto, **se desarrollarán e integrarán sin costo de desarrollo adicional** las siguientes características avanzadas durante la fase de despliegue y puesta en marcha:
 
-1. **📱 Notificaciones Directas a WhatsApp / Telegram:**
-   * Bot automático que enviará notificaciones instantáneas de picos térmicos o alertas logísticas críticas directamente al teléfono de los supervisores del cliente. Sin necesidad de tener la plataforma abierta para enterarse de un incidente.
-
-2. **🗺️ Geocercas de Seguridad y Control de Desvíos de Ruta:**
+1. **Geocercas de Seguridad y Control de Desvíos de Ruta:**
    * Alarma automática en el panel si el conductor desvía el vehículo de la ruta autorizada entre la finca y el aeropuerto. Prevención de robos de carga, desvíos no autorizados y uso indebido del vehículo.
 
-3. **🌐 Portal del Comprador Internacional (Trazabilidad Compartida):**
+2. **Portal del Comprador Internacional (Trazabilidad Compartida):**
    * Portal de consulta externo y seguro (acceso por token dinámico) para que los compradores internacionales en Miami, Ámsterdam o cualquier destino puedan verificar en línea que sus flores mantuvieron la cadena de frío durante todo el trayecto terrestre.
 
-4. **🔧 Módulo de Mantenimiento de Flota y Calibración de Sensores:**
+3. **Módulo de Mantenimiento de Flota y Calibración de Sensores:**
    * Planificador con avisos automáticos sobre fechas de calibración de las sondas de temperatura DS18B20 y mantenimiento preventivo de los vehículos de la flota.
 
 ---
 
-## 🏆 Paquete de Gestión Empresarial Incluido: Suite Completa de RR.HH. y Administración (Sin Costo Adicional)
+## Paquete de Gestión Empresarial Incluido: Suite Completa de RR.HH. y Administración (Sin Costo Adicional)
 
 > [!IMPORTANT]
-> Esta sección describe módulos **completamente programados y operativos** que **no forman parte del alcance de las Etapas 1-4**, pero que se ofrecen al cliente **de forma gratuita con la adjudicación del contrato**, si así lo desea. El cliente puede activarlos, desactivarlos o simplemente ignorarlos — su inclusión no representa costo de desarrollo adicional ya que están 100% listos.
+> Esta sección describe módulos **completamente programados y operativos** que **no forman parte del alcance de las Etapas 1-4**, pero que se ofrecen al cliente **de forma gratuita con la adjudicación del proyecto**, si así lo desea. El cliente puede activarlos, desactivarlos o simplemente ignorarlos — su inclusión no representa costo de desarrollo adicional ya que están 100% listos.
 >
 > Si el cliente decide no utilizarlos, la plataforma de logística funciona con plena autonomía sin ellos.
 
@@ -183,7 +179,7 @@ Nos diferenciamos de la competencia entregando no solo una plataforma logística
 
 ---
 
-### 📊 Módulo de Analítica e Inteligencia de Negocios
+### Módulo de Analítica e Inteligencia de Negocios
 
 * **[x] (Programado y Operativo)** Dashboard analítico con gráficos dinámicos e indicadores históricos de operación.
 * **[x] (Programado y Operativo)** Visualización de tendencias operativas por período (diario, semanal, mensual).
@@ -192,7 +188,7 @@ Nos diferenciamos de la competencia entregando no solo una plataforma logística
 
 ---
 
-### 🕐 Módulo de Asistencia y Control de Jornada del Personal
+### Módulo de Asistencia y Control de Jornada del Personal
 
 Este módulo es especialmente valioso para el control de conductores, despachadores y personal de finca.
 
@@ -211,7 +207,7 @@ Este módulo es especialmente valioso para el control de conductores, despachado
 
 ---
 
-### 💰 Módulo de Nómina y Gestión de Pagos
+### Módulo de Nómina y Gestión de Pagos
 
 * **[x] (Programado y Operativo)** **Generador automático de nómina** calculado desde las asistencias registradas y los turnos asignados.
 * **[x] (Programado y Operativo)** Configuración de parámetros de nómina: salario base, horas extra, descuentos, beneficios.
@@ -222,7 +218,7 @@ Este módulo es especialmente valioso para el control de conductores, despachado
 
 ---
 
-### 🎯 Módulo de Evaluación de Desempeño
+### Módulo de Evaluación de Desempeño
 
 * **[x] (Programado y Operativo)** **Creación de evaluaciones** con criterios y escalas personalizadas.
 * **[x] (Programado y Operativo)** **Asignación de evaluaciones** a empleados o grupos.
@@ -234,7 +230,7 @@ Este módulo es especialmente valioso para el control de conductores, despachado
 
 ---
 
-### 🧑‍💼 Módulo de Reclutamiento y Selección de Personal
+### Módulo de Reclutamiento y Selección de Personal
 
 * **[x] (Programado y Operativo)** **Creación de vacantes** con descripción del cargo, departamento, tipo de empleo y ubicación.
 * **[x] (Programado y Operativo)** **Portal de carreras público** (`/careers`) — los candidatos externos pueden ver y aplicar a las vacantes publicadas desde el sitio web de la empresa sin necesidad de crear una cuenta.
@@ -246,7 +242,7 @@ Este módulo es especialmente valioso para el control de conductores, despachado
 
 ---
 
-### 📋 Módulo de Reportes Generales Avanzados
+### Módulo de Reportes Generales Avanzados
 
 * **[x] (Programado y Operativo)** **Reportes de asistencia** con análisis de puntualidad, ausentismo y horas trabajadas.
 * **[x] (Programado y Operativo)** **Reportes de desempeño organizacional** con gráficos comparativos.
@@ -257,7 +253,7 @@ Este módulo es especialmente valioso para el control de conductores, despachado
 
 ---
 
-### 📢 Módulo de Notificaciones Inteligentes
+### Módulo de Notificaciones Inteligentes
 
 * **[x] (Programado y Operativo)** Centro de notificaciones unificado con campana de alertas en tiempo real (WebSocket).
 * **[x] (Programado y Operativo)** Historial completo de notificaciones recibidas con paginación y marcado de leídas.
@@ -268,7 +264,7 @@ Este módulo es especialmente valioso para el control de conductores, despachado
 
 ---
 
-### 📑 Módulo de Contratos del Personal
+### Módulo de Contratos del Personal
 
 * **[x] (Programado y Operativo)** Registro y gestión de contratos de empleados con fechas de inicio y vencimiento.
 * **[x] (Programado y Operativo)** **Alertas automáticas de vencimiento** — el sistema notifica al administrador con anticipación cuando un contrato está próximo a expirar, evitando incumplimientos laborales.
@@ -276,7 +272,7 @@ Este módulo es especialmente valioso para el control de conductores, despachado
 
 ---
 
-### 💼 Módulo de Contabilidad Básica
+### Módulo de Contabilidad Básica
 
 * **[x] (Programado y Operativo)** **Plan de cuentas contable** configurable con estructura jerárquica.
 * **[x] (Programado y Operativo)** **Registro de asientos contables** (diario de contabilidad).
