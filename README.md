@@ -1,270 +1,420 @@
-# EMPLIFI - Sistema de Recursos Humanos
-
-Sistema integral de gestión de recursos humanos desarrollado con React + Vite (Frontend) y Express + Prisma + PostgreSQL (Backend).
-
-## Características Principales
-
-- **Gestión de Empleados**: Registro, actualización y seguimiento completo del personal
-- **Control de Asistencia**: Registro de entrada/salida, gestión de turnos y ausencias
-- **Nómina**: Configuración, generación y consulta de pagos
-- **Evaluaciones de Desempeño**: Creación y asignación de evaluaciones
-- **Reclutamiento**: Gestión de vacantes y aplicaciones
-- **Reportes y Analytics**: Dashboard con métricas clave y reportes personalizados
-- **Gestión Documental**: Almacenamiento de contratos y documentos de empleados
-
-## Requisitos Previos
-
-Antes de comenzar, asegúrate de tener instalado:
-
-- **Node.js** (v18 o superior) - [Descargar aquí](https://nodejs.org/)
-- **PostgreSQL** (v14 o superior) - [Descargar aquí](https://www.postgresql.org/download/)
-- **Git** - [Descargar aquí](https://git-scm.com/)
-- **npm** o **yarn** (viene con Node.js)
-
-## Instalación
-
-### 1. Clonar el Repositorio
-
-```bash
-git clone <url-del-repositorio>
-cd recursos_humanos
-```
-
-### 2. Configurar la Base de Datos
-
-#### Opción A: Usando pgAdmin o psql
-
-```sql
-CREATE DATABASE db_recursos_humanos;
-```
-
-#### Opción B: Desde la línea de comandos
-
-```bash
-psql -U postgres
-CREATE DATABASE db_recursos_humanos;
-\q
-```
-
-### 3. Configurar el Backend
-
-```bash
-cd backend
-npm install
-```
-
-Crea un archivo `.env` en la carpeta `backend/` basándote en `.env.example`:
-
-```env
-PORT=4000
-DATABASE_URL="postgresql://usuario:password@localhost:5432/db_recursos_humanos?schema=public"
-ENCRYPTION_KEY="tu-clave-de-encriptacion-de-64-caracteres-hex"
-JWT_SECRET="tu-secret-jwt-super-seguro"
-FRONTEND_URL="http://localhost:5173"
-```
-
-> **Importante**: Genera una clave de encriptación segura ejecutando:
-> ```bash
-> node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-> ```
-
-### 4. Ejecutar Migraciones de Base de Datos
-
-```bash
-cd backend
-npx prisma migrate dev
-```
-
-### 5. Poblar la Base de Datos con Datos de Prueba
-
-El proyecto incluye seeders completos para generar datos de demostración:
-
-```bash
-cd backend
-node -r dotenv/config prisma/seed.js
-```
-
-Esto creará:
-- Usuario administrador: `admin@emplifi.com` / `123456`
-- Usuario empleado de prueba: `empleado@test.com` / `123456`
-- 25+ empleados adicionales con datos completos
-- Vacantes de trabajo, aplicaciones, entrevistas
-- Evaluaciones de desempeño, objetivos
-- Contratos, documentos, horarios
-- Historial de nómina
-- Encuestas de clima laboral
-
-### 6. Configurar el Frontend
-
-```bash
-cd frontend
-npm install
-```
-
-Crea un archivo `.env` en la carpeta `frontend/` (opcional):
-
-```env
-VITE_API_URL=http://localhost:4000
-```
-
-## Ejecutar el Proyecto
-
-### Opción 1: Ejecutar Backend y Frontend por Separado
-
-**Terminal 1 - Backend:**
-```bash
-cd backend
-npm run dev
-```
-El servidor estará disponible en `http://localhost:4000`
-
-**Terminal 2 - Frontend:**
-```bash
-cd frontend
-npm run dev
-```
-La aplicación estará disponible en `http://localhost:5173`
-
-### Opción 2: Usando Docker (Si está configurado)
-
-```bash
-docker-compose up
-```
-
-## Usuarios de Prueba
-
-Después de ejecutar el seeder, puedes iniciar sesión con:
-
-| Rol | Email | Contraseña |
-|-----|-------|------------|
-| Administrador | admin@emplifi.com | 123456 |
-| Empleado | empleado@test.com | 123456 |
-
-## Estructura del Proyecto
-
-```
-recursos_humanos/
-├── backend/
-│   ├── prisma/
-│   │   ├── schema.prisma          # Esquema de base de datos
-│   │   ├── seed.js                # Orquestador de seeders
-│   │   └── seeds/                 # Módulos de seeding
-│   ├── src/
-│   │   ├── controllers/           # Controladores de rutas
-│   │   ├── middleware/            # Middlewares (auth, etc.)
-│   │   ├── routes/                # Definición de rutas
-│   │   ├── services/              # Lógica de negocio
-│   │   ├── repositories/          # Acceso a datos
-│   │   ├── utils/                 # Utilidades (encriptación, etc.)
-│   │   └── server.js              # Punto de entrada
-│   └── package.json
-│
-├── frontend/
-│   ├── src/
-│   │   ├── api/                   # Configuración de Axios
-│   │   ├── components/            # Componentes reutilizables
-│   │   ├── pages/                 # Páginas/Vistas
-│   │   ├── services/              # Servicios de API
-│   │   └── App.jsx                # Componente principal
-│   └── package.json
-│
-└── README.md
-```
-
-## Scripts Útiles
-
-### Backend
-
-```bash
-# Desarrollo
-npm run dev
-
-# Reiniciar base de datos (¡CUIDADO: Borra todos los datos!)
-npx prisma migrate reset
-
-# Generar cliente de Prisma
-npx prisma generate
-
-# Abrir Prisma Studio (interfaz visual de DB)
-npm run prisma:studio
-
-# Ejecutar seeder solo para un módulo
-node -r dotenv/config prisma/seed.js --only=users
-node -r dotenv/config prisma/seed.js --only=recruitment
-```
-
-### Frontend
-
-```bash
-# Desarrollo
-npm run dev
-
-# Build para producción
-npm run build
-
-# Preview de build
-npm run preview
-```
-
-## Solución de Problemas
-
-### Error: "Cannot find module '@prisma/client'"
-```bash
-cd backend
-npx prisma generate
-```
-
-### Error: "Port 4000 is already in use"
-Cambia el puerto en `backend/.env` o detén el proceso que usa el puerto 4000.
-
-### Error al conectar con PostgreSQL
-Verifica que:
-1. PostgreSQL esté corriendo
-2. La URL de conexión en `.env` sea correcta
-3. El usuario tenga permisos en la base de datos
-
-### Pantalla en blanco en el frontend
-1. Verifica que el backend esté corriendo
-2. Revisa la consola del navegador para errores
-3. Asegúrate de que `VITE_API_URL` sea correcto
-
-## Tecnologías Utilizadas
-
-### Backend
-- **Express.js** - Framework web
-- **Prisma** - ORM para PostgreSQL
-- **PostgreSQL** - Base de datos
-- **JWT** - Autenticación
-- **bcryptjs** - Hash de contraseñas
-- **Multer** - Upload de archivos
-
-### Frontend
-- **React 19** - Librería UI
-- **Vite** - Build tool
-- **React Router** - Navegación
-- **Axios** - Cliente HTTP
-- **Recharts** - Gráficos
-- **Framer Motion** - Animaciones
-- **Tailwind CSS** - Estilos
-
-## Licencia
-
-Este proyecto es privado y de uso educativo.
-
-## Contribución
-
-Para contribuir al proyecto:
-
-1. Crea un fork del repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## Soporte
-
-Para reportar problemas o solicitar nuevas características, abre un issue en el repositorio.
+# Desarrollo e Implementación de Software - Plataforma Logística
+
+> [!TIP]
+> ### Estado de Implementación del Software (Ventaja Competitiva Verificada)
+> Se certifica que el **100% de las funcionalidades del sistema web, móvil PWA y motor de telemetría** detalladas en las Etapas 1, 2, 3 y 4 de esta propuesta **ya se encuentran completamente programadas, probadas y 100% operativas en un servidor de producción activo**.
+> * **Valor Agregado Incluido sin Costo Adicional:** El sistema incorpora de fábrica módulos de seguridad biométrica (WebAuthn/FIDO2), alertas automáticas de ruptura de cadena de frío, notificaciones en tiempo real por WebSocket, geocercas de llegada automática, sistema de correo electrónico transaccional, simulador de emergencias térmicas y exportación de reportes en CSV/PDF.
 
 ---
 
-Desarrollado con dedicación para la gestión eficiente de recursos humanos
+## Alcance del Proyecto por Etapas y Estado de Desarrollo
+
+### Etapa 1 — Plataforma base y módulo de despachos
+Esta etapa comprende la implementación inicial de la plataforma web y el módulo base de despachos.
+
+* **[x] (Programado y Operativo)** Configuración inicial del sistema web (base de datos PostgreSQL, servidor Node.js/Express y cliente React).
+* **[x] (Programado y Operativo)** Acceso mediante usuario y contraseña (inicio de sesión seguro con JWT firmado).
+* **[x] (Programado y Operativo)** Restablecimiento de contraseña por correo electrónico (enlace seguro con token de expiración).
+* **[x] (Programado y Operativo)** Roles básicos de usuario: `admin`, `operator` y `driver` — con control de acceso por ruta y recurso.
+* **[x] (Programado y Operativo)** Panel principal de administración (dashboard gerencial con KPIs en tiempo real).
+* **[x] (Programado y Operativo) Módulo de despachos completo:**
+  * **[x] (Programado y Operativo)** Creación de despachos con generación automática de folio único (ej: `DISP-XXXXXX`).
+  * **[x] (Programado y Operativo)** Edición de despachos con validación de permisos por rol.
+  * **[x] (Programado y Operativo)** Registro de finca de origen (catálogo con nombre y ubicación).
+  * **[x] (Programado y Operativo)** Registro de destino (catálogo de aeropuertos de exportación).
+  * **[x] (Programado y Operativo)** Registro de fecha y hora de despacho.
+  * **[x] (Programado y Operativo)** Registro de responsable de la creación (vinculado al empleado del sistema).
+  * **[x] (Programado y Operativo)** Registro de observaciones y datos básicos de la carga.
+  * **[x] (Programado y Operativo)** Ciclo de vida del despacho con estados: `Creado → Preparación → En carga → Despachado → Finalizado`.
+* **[x] (Programado y Operativo)** Listado de despachos con grilla dinámica paginada.
+* **[x] (Programado y Operativo)** Filtros avanzados de consulta: por finca, destino, estado, responsable y rango de fechas.
+
+> **Criterio de aceptación de la etapa:**
+> La etapa se considerará cumplida cuando EL CLIENTE pueda ingresar a la plataforma web, crear, editar y consultar despachos con la información básica definida para la operación. *(Estado actual: **CUMPLIDA Y PROBADA AL 100%**)*
+
+---
+
+### Etapa 2 — QR, escaneo e interfaz móvil para choferes
+Esta etapa comprende la generación de códigos QR y la habilitación de una interfaz móvil web/PWA para uso de choferes u operadores.
+
+* **[x] (Programado y Operativo)** Generación de código QR único por caja (ej: serial `QR_CAJA-XXXXXXXX` almacenado en base de datos).
+* **[x] (Programado y Operativo)** Asociación de QR a despacho (relación uno a muchos: un despacho contiene N cajas).
+* **[x] (Programado y Operativo)** Identificador único e irrepetible por caja con validación de duplicados a nivel de base de datos.
+* **[x] (Programado y Operativo)** Formato imprimible de etiqueta QR individual (nombre del operador, código de despacho, fecha y código de barras 2D generado dinámicamente).
+* **[x] (Programado y Operativo)** **Impresión masiva de etiquetas en lote** (batch printing de todas las cajas de un despacho en una sola orden de impresión — optimizado para impresoras térmicas) y posible de imprimir en impresora normal de tintas.
+* **[x] (Programado y Operativo)** Registro masivo de cajas por texto separado por comas (ingreso rápido desde lectores láser USB o teclado).
+* **[x] (Programado y Operativo)** Ciclo de vida de la caja con estados: `Pendiente → Cargada → En tránsito → Entregada / Faltante`.
+* **[x] (Programado y Operativo) Interfaz móvil web/PWA adaptada para choferes u operadores:**
+  * **[x] (Programado y Operativo)** Login del chofer/operador adaptado a pantallas de celular (diseño mobile-first).
+  * **[x] (Programado y Operativo)** Dashboard personal del conductor: viajes asignados activos e historial.
+  * **[x] (Programado y Operativo)** Vista de detalle del viaje: finca de origen, destino, vehículo, listado de cajas del despacho y estado de cada caja.
+  * **[x] (Programado y Operativo)** Escaneo de QR de cajas desde la cámara de cualquier celular (sin necesidad de instalar ninguna aplicación nativa en la tienda de apps).
+  * **[x] (Programado y Operativo)** Registro geolocalizado del escaneo (latitud y longitud del punto de escaneo almacenados).
+  * **[x] (Programado y Operativo)** Marcado automático de caja como `Cargada` al escanear con confirmación visual.
+  * **[x] (Programado y Operativo)** Alerta si se intenta escanear una caja que no pertenece al despacho activo.
+  * **[x] (Programado y Operativo)** Registro y alerta visual de cajas en estado `Faltante`.
+  * **[x] (Programado y Operativo)** Cambio de estado del viaje por el conductor: `En finca → En tránsito → Llegado a aeropuerto`.
+  * **[x] (Programado y Operativo)** Carga fotográfica de guía firmada directamente desde el celular del conductor.
+  * **[x] (Programado y Operativo)** Carga de documentos logísticos adicionales: guías de despacho, evidencias fotográficas, documentos de aduana.
+
+> **Criterio de aceptación de la etapa:**
+> La etapa se considerará cumplida cuando EL CLIENTE pueda generar QR, asociarlos a cajas/despachos, imprimirlos en formato básico o en lote, y cuando el chofer u operador pueda escanear cajas desde la interfaz móvil, registrando salida de finca y llegada al aeropuerto. *(Estado actual: **CUMPLIDA Y PROBADA AL 100%**)*
+
+---
+
+### Etapa 3 — Viajes, control operativo y monitoreo GPS en tiempo real
+Esta etapa comprende la gestión de viajes y la conexión operativa con información logística en tiempo real.
+
+* **[x] (Programado y Operativo)** Creación y asignación de viajes a conductor y vehículo.
+* **[x] (Programado y Operativo)** Asociación de vehículo a viaje (catálogo con placa, marca y modelo).
+* **[x] (Programado y Operativo)** Asociación de despacho completo al viaje (un viaje transporta un despacho con todas sus cajas).
+* **[x] (Programado y Operativo) Estados del viaje con historial trazable:**
+  * **[x]** `Asignado` — Viaje creado y asignado al conductor.
+  * **[x]** `En finca` — Conductor llegó a la finca de origen.
+  * **[x]** `En tránsito` — Vehículo en movimiento; activa automáticamente el motor de telemetría GPS y temperatura.
+  * **[x]** `Llegado a aeropuerto` — Activado por geocerca automática o por el conductor.
+  * **[x]** `Finalizado` — Cierre logístico completo del despacho.
+* **[x] (Programado y Operativo)** Historial completo de cambios de estado con timestamp, usuario responsable del cambio y notas del operador.
+* **[x] (Programado y Operativo)** Mapa GPS en tiempo real con trayectoria del vehículo (tecnología Leaflet con OpenStreetMap).
+* **[x] (Programado y Operativo)** Gráfico histórico de temperatura en tiempo real durante el trayecto (gráfico de línea con marca de tiempo).
+* **[x] (Programado y Operativo)** Indicadores en vivo: velocidad de actualización cada 25 segundos, temperatura actual, última posición conocida.
+* **[x] (Programado y Operativo)** **Geocerca automática de llegada a destino:** El servidor detecta automáticamente cuando el vehículo entra en el radio del aeropuerto de destino y cambia el estado del viaje sin intervención del conductor.
+* **[x] (Programado y Operativo)** Selector de viaje activo para monitorear múltiples vehículos en simultáneo desde el panel administrativo.
+* **[x] (Programado y Operativo)** Infraestructura de servidor lista para recibir tramas de posición GPS y temperatura de dispositivos hardware (Teltonika FMB120) en cuanto se contraten e instalen físicamente.
+
+> **Criterio de aceptación de la etapa:**
+> La etapa se considerará cumplida cuando EL CLIENTE pueda ver en tiempo real la posición y temperatura del vehículo durante el trayecto, consultar el historial de estados del viaje y validar la llegada al aeropuerto. *(Estado actual: **CUMPLIDA Y PROBADA AL 100%**)*
+
+---
+
+### Etapa 4 — Entrega final: Documentos, dashboard ejecutivo, reportes, auditoría y cierre operativo
+Esta etapa comprende el cierre funcional de la plataforma con reportes, indicadores gerenciales y trazabilidad total.
+
+* **[x] (Programado y Operativo)** Carga de guías y documentos vinculados al despacho (4 tipos nativos: `Guía firmada`, `Guía de despacho`, `Documentos logísticos`, `Evidencias fotográficas`).
+* **[x] (Programado y Operativo)** Visualización y descarga de archivos cargados desde el panel web.
+* **[x] (Programado y Operativo)** Registro documental con historial de quién subió el documento y cuándo.
+* **[x] (Programado y Operativo) Dashboard ejecutivo con KPIs en tiempo real (auto-actualización cada 15 segundos):**
+  * **[x]** Total de despachos (activos e histórico).
+  * **[x]** Total de cajas registradas con desglose por estado.
+  * **[x]** Cajas cargadas, en tránsito, entregadas y faltantes.
+  * **[x]** Viajes activos y viajes finalizados.
+  * **[x]** **Temperatura promedio, mínima y máxima** registrada en el sistema.
+  * **[x]** Tasa de entrega exitosa (%) calculada sobre cajas entregadas vs. faltantes.
+  * **[x]** Tasa de entregas a tiempo (%) calculada sobre el historial de viajes finalizados.
+  * **[x]** Listado de viajes activos en tiempo real con enlace directo al mapa de monitoreo.
+* **[x] (Programado y Operativo) Módulo de Reportes con exportación:**
+  * **[x]** Reporte de despachos: filtro por finca, estado y rango de fechas — exportable a **CSV/Excel**.
+  * **[x]** Reporte de viajes: filtro por conductor, estado y rango de fechas — exportable a **CSV/Excel**.
+  * **[x]** Reporte de estado de cajas: filtro por estado — exportable a **CSV/Excel**.
+  * **[x]** Impresión directa a **PDF** desde cualquier navegador (sin software adicional).
+* **[x] (Programado y Operativo) Módulo de Auditoría y Trazabilidad General:**
+  * **[x]** Log de cada acción del sistema: creación, edición, eliminación, escaneado QR, carga de documentos, cambios de estado, logins, logouts y logins fallidos.
+  * **[x]** Acceso de consulta al operador logístico (no solo al administrador).
+  * **[x]** Filtros de auditoría: por usuario, por acción, por entidad (Despacho, Viaje, Caja) y por rango de fechas.
+  * **[x]** Registro de IP de origen en cada evento de auditoría.
+* **[x] (Programado y Operativo)** Registro de operadores, administradores y conductores en el sistema.
+* **[x] (Programado y Operativo)** Documentación técnica digital de uso provista.
+
+> **Criterio de aceptación de la etapa:**
+> La etapa se considerará cumplida cuando EL CLIENTE pueda operar el flujo completo: crear despacho → generar QR → escanear cajas → controlar viaje → monitorear temperatura/GPS → registrar salida y llegada → cargar documentos → visualizar dashboard → exportar reportes y revisar trazabilidad general. *(Estado actual: **CUMPLIDA Y PROBADA AL 100%**)*
+
+---
+
+## Funciones Avanzadas Incluidas Completamente GRATIS (Valor Agregado de Fábrica)
+
+Con el fin de asegurar la adjudicación del proyecto y ofrecer una plataforma de primer nivel, **las siguientes características de nivel enterprise se incluyen 100% programadas y operativas, sin costo de desarrollo adicional:**
+
+1. **Alertas Automáticas de Ruptura de Cadena de Frío:**
+   * El motor de telemetría detecta en tiempo real cuando la temperatura supera el rango florícola óptimo (2°C – 8°C) y dispara **automáticamente** una notificación roja de pánico a todos los administradores y operadores logísticos activos.
+   * Cuando la temperatura vuelve al rango normal, el sistema envía una notificación de normalización confirmando que la cadena de frío fue restaurada.
+
+2. **Sistema de Notificaciones en Tiempo Real (WebSocket):**
+   * Las alertas se envían instantáneamente por WebSocket (Socket.io) sin necesidad de recargar la pantalla. La campana de notificaciones se actualiza en vivo con contador de no leídas.
+   * Incluye notificaciones por correo electrónico transaccional para eventos críticos (contratos, alertas operativas).
+
+3. **Exportador de Historial Completo a CSV/Excel y PDF:**
+   * Descarga completa de registros de despachos, viajes y cajas en formato CSV compatible con Excel, con soporte para caracteres especiales (UTF-8 BOM).
+   * Impresión a PDF directamente desde el navegador sin instalar software adicional.
+
+4. **Simulador Interactivo de Emergencias de Frío:**
+   * Botón en el panel de monitoreo para forzar un pico de temperatura de prueba (9°C – 11.5°C) y verificar en vivo el comportamiento automático de las alertas. Permite al cliente validar la reacción del sistema antes de la operación real.
+
+5. **Autenticación Biométrica de Última Generación (WebAuthn / FIDO2):**
+   * Registro e inicio de sesión seguros usando la huella digital o reconocimiento facial del usuario: **FaceID, TouchID, Windows Hello** — sin contraseñas escritas.
+   * Las credenciales biométricas tienen validez de 90 días y se invalidan automáticamente si se detecta un intento de clonación (análisis de contadores de seguridad por autenticador).
+   * Identificación del hardware autenticador (AAGUID) para trazabilidad del dispositivo usado en el login.
+   * Habilitación/deshabilitación global de la biometría desde el panel de configuración del sistema.
+
+6. **Panel de Configuración Global del Sistema:**
+   * Modo mantenimiento con banner personalizable para usuarios (permite programar ventanas de actualización).
+   * Control de acceso por IP permitida (whitelist de direcciones IP).
+   * Configuración de radio de geocerca global y coordenadas del destino.
+   * Activación/desactivación centralizada de módulos de seguridad.
+
+---
+
+## Beneficios Adicionales por Adjudicación del Proyecto
+
+Como incentivo exclusivo por la adjudicación del proyecto, **se desarrollarán e integrarán sin costo de desarrollo adicional** las siguientes características avanzadas durante la fase de despliegue y puesta en marcha:
+
+1. **Geocercas de Seguridad y Control de Desvíos de Ruta:**
+   * Alarma automática en el panel si el conductor desvía el vehículo de la ruta autorizada entre la finca y el aeropuerto. Prevención de robos de carga, desvíos no autorizados y uso indebido del vehículo.
+
+2. **Portal del Comprador Internacional (Trazabilidad Compartida):**
+   * Portal de consulta externo y seguro (acceso por token dinámico) para que los compradores internacionales en Miami, Ámsterdam o cualquier destino puedan verificar en línea que sus flores mantuvieron la cadena de frío durante todo el trayecto terrestre.
+
+3. **Módulo de Mantenimiento de Flota y Calibración de Sensores:**
+   * Planificador con avisos automáticos sobre fechas de calibración de las sondas de temperatura DS18B20 y mantenimiento preventivo de los vehículos de la flota.
+
+4. **Copias de Seguridad Automáticas (Backups del Sistema):**
+   * Automatización de copias de seguridad recurrentes tanto de la base de datos PostgreSQL como de los documentos cargados en el servidor, protegiendo la información de la operación ante cualquier eventualidad o pérdida accidental de datos.
+
+5. **Modo Offline en la Aplicación Móvil PWA (Soporte sin Cobertura Celular):**
+   * Habilitación de la capacidad de operar sin conexión a internet en la aplicación de los conductores. Si el camión transita por zonas sin cobertura o túneles de la sierra ecuatoriana, el chofer podrá seguir visualizando su viaje activo, registrando el escaneo de cajas QR y digitando reportes de temperatura.
+   * **Sincronización Inteligente en Caliente:** Todos los escaneos e ingresos se guardan localmente en la memoria del navegador (IndexedDB). Al recuperar la señal de datos, la PWA sincronizará y subirá la información al servidor automáticamente y en orden cronológico.
+   * *(Nota lógica: Al no haber internet durante la pérdida de señal, no se transmitirá la ubicación GPS en tiempo real para el panel del administrador, pero todo el trayecto y los eventos se reconstruirán e informarán inmediatamente al recuperar conexión).*
+
+---
+
+## Paquete de Gestión Empresarial Incluido: Suite Completa de RR.HH. y Administración (Sin Costo Adicional)
+
+> [!IMPORTANT]
+> Esta sección describe módulos **completamente programados y operativos** que **no forman parte del alcance de las Etapas 1-4**, pero que se ofrecen al cliente **de forma gratuita con la adjudicación del proyecto**, si así lo desea. El cliente puede activarlos, desactivarlos o simplemente ignorarlos — su inclusión no representa costo de desarrollo adicional ya que están 100% listos.
+>
+> Si el cliente decide no utilizarlos, la plataforma de logística funciona con plena autonomía sin ellos.
+
+Nos diferenciamos entregando no solo una plataforma logística, sino un **ecosistema de gestión completo**. Los siguientes módulos están disponibles e integrados desde el día uno:
+
+---
+
+### Módulo de Analítica e Inteligencia de Negocios
+
+* **[x] (Programado y Operativo)** Dashboard analítico con gráficos dinámicos e indicadores históricos de operación.
+* **[x] (Programado y Operativo)** Visualización de tendencias operativas por período (diario, semanal, mensual).
+* **[x] (Programado y Operativo)** Motor de inteligencia empresarial integrado con análisis de datos de toda la plataforma.
+* **[x] (Programado y Operativo)** Exportación de datos para análisis externo.
+
+---
+
+### Módulo de Asistencia y Control de Jornada del Personal
+
+Este módulo es especialmente valioso para el control de conductores, despachadores y personal de finca.
+
+* **[x] (Programado y Operativo)** **Marcador digital de asistencia** con reloj en tiempo real (entrada, almuerzo y salida).
+* **[x] (Programado y Operativo)** **Geolocalización obligatoria al marcar** — el sistema valida que el empleado se encuentre en la zona de trabajo configurada antes de registrar la asistencia.
+* **[x] (Programado y Operativo)** **Bloqueo automático de VPN/Proxy** — detección y rechazo de intentos de marcar asistencia desde redes privadas virtuales o proxies, previniendo marcaciones fraudulentas a distancia.
+* **[x] (Programado y Operativo)** **Verificación biométrica obligatoria** al marcar asistencia (huella digital o FaceID del dispositivo), garantizando que es el empleado en persona quien registra, no un tercero.
+* **[x] (Programado y Operativo)** Detección y registro de llegadas tardías con insignia visual de "Tardío / Puntual".
+* **[x] (Programado y Operativo)** Consentimiento de privacidad y tracking con aceptación digital del empleado (cumplimiento legal).
+* **[x] (Programado y Operativo)** **Gestión de Turnos y Horarios:** creación de turnos personalizados (Mañana, Tarde, Noche) con tolerancia de entrada y tiempo de almuerzo configurables.
+* **[x] (Programado y Operativo)** **Asignación masiva de turnos** a múltiples empleados simultáneamente con rango de fechas de vigencia.
+* **[x] (Programado y Operativo)** **Calendario de equipo:** vista mensual de asistencias por persona y día con codificación de colores.
+* **[x] (Programado y Operativo)** Gestión de ausencias y novedades (justificadas, injustificadas, vacaciones, incapacidades).
+* **[x] (Programado y Operativo)** Reversa de geocodificación — el sistema muestra la dirección exacta (calle y ciudad) del lugar donde el empleado marcó.
+* **[x] (Programado y Operativo)** **Reportes de asistencia:** historial completo con filtros por empleado, fecha y estado — exportable.
+
+---
+
+### Módulo de Nómina y Gestión de Pagos
+
+* **[x] (Programado y Operativo)** **Generador automático de nómina** calculado desde las asistencias registradas y los turnos asignados.
+* **[x] (Programado y Operativo)** Configuración de parámetros de nómina: salario base, horas extra, descuentos, beneficios.
+* **[x] (Programado y Operativo)** **Mis Pagos:** vista personal del empleado con historial de pagos y comprobantes.
+* **[x] (Programado y Operativo)** **Gestión de beneficios y deducciones:** configuración de rubros por categoría de empleado.
+* **[x] (Programado y Operativo)** **Reporte de costos de nómina:** desglose por departamento y período.
+* **[x] (Programado y Operativo)** Alertas automáticas sobre pagos pendientes.
+
+---
+
+### Módulo de Evaluación de Desempeño
+
+* **[x] (Programado y Operativo)** **Creación de evaluaciones** con criterios y escalas personalizadas.
+* **[x] (Programado y Operativo)** **Asignación de evaluaciones** a empleados o grupos.
+* **[x] (Programado y Operativo)** **Ejecución de evaluaciones** desde la plataforma (autoevaluación o evaluación por parte del supervisor).
+* **[x] (Programado y Operativo)** **Dashboard de resultados** con gráficos de desempeño individual y comparativo.
+* **[x] (Programado y Operativo)** **Gestión de metas** individuales por empleado con seguimiento de avance.
+* **[x] (Programado y Operativo)** **Mis evaluaciones:** vista personal del empleado con historial de evaluaciones recibidas.
+* **[x] (Programado y Operativo)** **Reporte de desempeño:** resumen organizacional de resultados y tendencias.
+
+---
+
+### Módulo de Reclutamiento y Selección de Personal
+
+* **[x] (Programado y Operativo)** **Creación de vacantes** con descripción del cargo, departamento, tipo de empleo y ubicación.
+* **[x] (Programado y Operativo)** **Portal de carreras público** (`/careers`) — los candidatos externos pueden ver y aplicar a las vacantes publicadas desde el sitio web de la empresa sin necesidad de crear una cuenta.
+* **[x] (Programado y Operativo)** **Postulación en línea:** el candidato sube su hoja de vida y datos directamente desde el portal; la postulación llega automáticamente al panel del administrador o responsable de RRHH.
+* **[x] (Programado y Operativo)** **Dashboard de reclutamiento:** listado de vacantes activas con contador de postulaciones recibidas.
+* **[x] (Programado y Operativo)** **Detalles de postulación:** revisión completa de la hoja de vida, carta de presentación y datos del candidato con historial de seguimiento.
+* **[x] (Programado y Operativo)** **Gestión del estado de la vacante:** abrir, cerrar o relanzar publicaciones con un clic.
+* **[x] (Programado y Operativo)** **Enlace compartible de vacante:** generación de link copiable para distribuir la vacante en redes sociales o portales de empleo externos.
+
+---
+
+### Módulo de Reportes Generales Avanzados
+
+* **[x] (Programado y Operativo)** **Reportes de asistencia** con análisis de puntualidad, ausentismo y horas trabajadas.
+* **[x] (Programado y Operativo)** **Reportes de desempeño organizacional** con gráficos comparativos.
+* **[x] (Programado y Operativo)** **Reportes de costo de nómina** por período y departamento.
+* **[x] (Programado y Operativo)** **Reportes de rotación de personal** (turnover) con análisis de retención.
+* **[x] (Programado y Operativo)** **Reportes de satisfacción** del equipo.
+* **[x] (Programado y Operativo)** **Reportes personalizados** con constructor de filtros ad-hoc.
+
+---
+
+### Módulo de Notificaciones Inteligentes
+
+* **[x] (Programado y Operativo)** Centro de notificaciones unificado con campana de alertas en tiempo real (WebSocket).
+* **[x] (Programado y Operativo)** Historial completo de notificaciones recibidas con paginación y marcado de leídas.
+* **[x] (Programado y Operativo)** **Preferencias de notificación por usuario:** el empleado configura qué tipos de alertas desea recibir (por correo, in-app, o ambas).
+* **[x] (Programado y Operativo)** Notificaciones automáticas de contratos próximos a vencer.
+* **[x] (Programado y Operativo)** Notificaciones automáticas de alertas logísticas (temperatura, viajes).
+* **[x] (Programado y Operativo)** Sistema de correo electrónico transaccional integrado (restablecimiento de contraseña, alertas críticas).
+
+---
+
+### Módulo de Contratos del Personal
+
+* **[x] (Programado y Operativo)** Registro y gestión de contratos de empleados con fechas de inicio y vencimiento.
+* **[x] (Programado y Operativo)** **Alertas automáticas de vencimiento** — el sistema notifica al administrador con anticipación cuando un contrato está próximo a expirar, evitando incumplimientos laborales.
+* **[x] (Programado y Operativo)** Listado de contratos próximos a vencer con panel de acción rápida.
+
+---
+
+### Módulo de Contabilidad Básica
+
+* **[x] (Programado y Operativo)** **Plan de cuentas contable** configurable con estructura jerárquica.
+* **[x] (Programado y Operativo)** **Registro de asientos contables** (diario de contabilidad).
+* **[x] (Programado y Operativo)** **Balance de comprobación** generado automáticamente.
+* **[x] (Programado y Operativo)** **Gestión de centros de costo** por departamento o proyecto.
+* **[x] (Programado y Operativo)** **Gestión de períodos contables** con apertura y cierre.
+* **[x] (Programado y Operativo)** Dashboard contable con indicadores financieros básicos.
+
+---
+
+> **Resumen del Paquete Adicional Gratuito:** Con la adjudicación del proyecto, el cliente recibe, además de la plataforma logística completa de las Etapas 1-4, una **suite de 8 módulos adicionales** (Analítica, Asistencia, Nómina, Desempeño, Reclutamiento, Reportes, Contratos y Contabilidad) que normalmente representarían una inversión de desarrollo adicional significativa. Todos estos módulos pueden habilitarse, deshabilitarse o personalizarse según las necesidades específicas de la operación del cliente.
+
+---
+
+## Propiedad Intelectual, Licenciamiento y Cumplimiento Legal
+
+### Propiedad del Código Fuente y Modelo de Entrega
+* **Propiedad Intelectual:** El presente proyecto contempla el despliegue y la configuración operativa de la plataforma en el servidor del cliente (AWS Lightsail) bajo licencia de uso, mas **no incluye la transferencia, propiedad ni entrega del código fuente original** del sistema.
+* **Formato de Instalación Seguro:** Para garantizar la protección de la propiedad intelectual del desarrollo, el software será instalado y configurado en el servidor del cliente en formato de producción optimizado, utilizando código compilado/ofuscado y/o mediante contenedores **Docker** cerrados y preconfigurados.
+* **Autonomía Total sin Tocar Código:** El cliente no requiere acceder al código fuente para ninguna tarea de gestión u operación. El panel administrativo cuenta con módulos e interfaces visuales completas para que el administrador gestione de forma 100% autónoma: usuarios, roles, empleados, conductores, vehículos, fincas, destinos, geocercas, horarios, turnos y configuraciones de seguridad global sin depender del equipo técnico.
+
+### Cumplimiento con la Ley de Protección de Datos Personales (LOPDP — Ecuador)
+El sistema está diseñado bajo estándares de seguridad informática y cumple con los requerimientos de la **Ley Orgánica de Protección de Datos Personales** vigente en Ecuador, evitando cualquier riesgo de contingencia legal para su empresa:
+* **Consentimiento Explícito:** La aplicación móvil/PWA para conductores y el digitalizador de asistencia incluyen flujos de consentimiento explícito e informado para el tratamiento de datos y geolocalización.
+* **Minimización de Datos Biométricos:** La autenticación biométrica de última generación (FIDO2/WebAuthn) se procesa localmente en el chip de seguridad del dispositivo del usuario (celular o computador). El servidor **nunca** almacena huellas digitales o rostros crudos, cumpliendo estrictamente con la ley.
+* **Trazabilidad y Auditoría:** Registro inalterable de accesos y acciones en la base de datos (logs de auditoría con marcas de tiempo e IPs de origen) para auditorías de cumplimiento.
+
+---
+
+## Requisitos de Servidor, Dominio e Infraestructura Recomendada
+
+Para garantizar la soberanía de la base de datos, la seguridad en la navegación y la automatización de backups, se ha dimensionado la siguiente infraestructura:
+
+* **Plan AWS Lightsail Seleccionado:** **$12 USD / mes** (2 GB RAM, 2 vCPUs, 60 GB SSD, 3 TB de transferencia mensual).
+* **Dominio Corporativo (.com):** **$10.46 USD / año** (adquirido a través de Cloudflare; incluye de forma nativa certificado de seguridad SSL de por vida y encriptación de datos de extremo a extremo configurada bajo el modo **SSL/TLS Estricto (Full / Strict)** de Cloudflare para máxima protección del tráfico y seguridad proxy contra ataques).
+* **Soberanía Absoluta de Datos:** Base de datos PostgreSQL instalada en una instancia privada dedicada, de propiedad exclusiva del cliente. Sin compartir infraestructura con terceros.
+* **Backups Automáticos Diarios:** Snapshots programados para recuperación inmediata ante incidentes o corrupción de datos.
+* **Capacidad Dual de Procesamiento:** Las 2 vCPUs permiten recibir y procesar tramas de telemetría de los camiones en paralelo sin comprometer el rendimiento del panel administrativo.
+* **Escalable:** El plan puede escalarse en minutos si la flota de vehículos crece.
+
+---
+
+## Solución Tecnológica de Telemetría Seleccionada (Hardware — Excluido del Costo de Software)
+
+Para cumplir el requerimiento de temperatura y rastreo en tiempo real de forma automática, se recomienda el siguiente hardware (su adquisición, instalación y conectividad están excluidas del costo de desarrollo de software):
+
+> [!NOTE]
+> Se presentan **dos opciones de rastreador GPS** con distinta tecnología y precio. La plataforma es 100% compatible con ambos modelos sin modificación alguna.
+
+#### Opción A — Teltonika FMB120 (2G/GPRS) · Económica
+
+| Componente | Modelo | Costo Aproximado (Ecuador) |
+|---|---|---|
+| Rastreador GPS | **Teltonika FMB120** *(2G — red GPRS)* | **$50 – $70 USD** por vehículo |
+| Sensor de Temperatura | **Sonda DS18B20** (acero inoxidable, cable 1-Wire, 3–5 m) | $4 – $7 USD por vehículo |
+| Conectividad celular | **SIM M2M** (Claro / Movistar / Multicarrier) | $3 – $5 USD / mes por vehículo |
+| Instalación física | Cableado cabina → furgón refrigerado | $25 – $40 USD por vehículo |
+
+> [!WARNING]
+> El **FMB120 opera en red 2G (GPRS)**. Las operadoras en Ecuador (Claro, Movistar) están migrando progresivamente sus redes y reduciendo cobertura 2G. Se recomienda consultar cobertura en la ruta finca-aeropuerto antes de adquirirlo.
+
+#### Opción B — Teltonika FMC130 (4G LTE) · Recomendada
+
+| Componente | Modelo | Costo Aproximado (Ecuador) |
+|---|---|---|
+| Rastreador GPS | **Teltonika FMC130** *(4G LTE — red moderna)* | **$85 – $100 USD** por vehículo |
+| Sensor de Temperatura | **Sonda DS18B20** (acero inoxidable, cable 1-Wire, 3–5 m) | $4 – $7 USD por vehículo |
+| Conectividad celular | **SIM M2M** (Claro / Movistar / Multicarrier) | $3 – $5 USD / mes por vehículo |
+| Instalación física | Cableado cabina → furgón refrigerado | $25 – $40 USD por vehículo |
+
+> [!TIP]
+> El **FMC130 es la opción recomendada**. Opera en redes 4G LTE (mayor velocidad, menor latencia y mayor estabilidad de señal) y garantiza compatibilidad a largo plazo con la infraestructura celular nacional. Precio verificado en distribuidores autorizados Ecuador: Sesotec GPS, International Global Ecuador, MercadoLibre EC.
+
+> [!TIP]
+> **Alternativa Flexible de Bajo Costo (Rastreo mediante Celular del Conductor — Costo $0):**
+> Si se desea **eliminar la inversión inicial en hardware y los pagos de mensualidades de chips de datos**, la plataforma está diseñada para permitir el monitoreo utilizando el chip GPS del teléfono celular del propio chofer a través de la aplicación móvil PWA (ya programada y operativa).
+> * **Ahorro Absoluto:** $0 de costo en equipos GPS, $0 de costo en talleres de instalación y $0 en mensualidades de conectividad para el vehículo.
+> * **Consumo Mínimo de Datos:** Sí requiere internet móvil activo en el celular para transmitir la ubicación al servidor, pero el consumo es extremadamente bajo (menos de 2 MB al mes por conductor, equivalente a enviar solo un par de fotos por WhatsApp). Funciona con cualquier plan básico o recarga prepago común.
+> * **Control de Temperatura:** Bajo esta modalidad, el conductor puede registrar manualmente el valor de temperatura reportado por el termómetro de cabina en los puntos de control, o a futuro se puede integrar con sensores de temperatura portátiles inalámbricos vía Bluetooth (BLE).
+> * **Decisión del Cliente:** El software ya soporta ambas arquitecturas de rastreo. Queda a completa elección del cliente qué modelo implementar para su flota.
+
+---
+
+## Resumen Consolidado de Costos Estimados (Infraestructura y Hardware)
+
+Para facilitar la planificación financiera del proyecto, a continuación se detalla el presupuesto consolidado de la infraestructura en la nube y el hardware de telemetría (valores referenciales excluidos del costo de desarrollo del software):
+
+### 1. Costos de Infraestructura Global (Fijos)
+Estos valores sostienen la plataforma administrativa web y la base de datos de manera centralizada.
+
+| Concepto | Proveedor | Frecuencia de Pago | Costo Estimado (USD) |
+|---|---|---|---|
+| **Servidor VPS (AWS Lightsail)** | Amazon Web Services | Mensual | **$12.00 USD / mes** |
+| **Dominio Corporativo (.com)** | Cloudflare | Anual | **$10.46 USD / año** |
+| **Seguridad SSL y Proxy DNS** | Cloudflare | N/A | **$0.00 USD (Gratis de por vida)** |
+| **Total Anual de Plataforma (Año 1)** | AWS + Cloudflare | Anualizado | **$154.46 USD** |
+
+### 2. Costos de Telemetría por Vehículo (Variables)
+Estos valores se aplican de forma individual por cada camión que se decida equipar con sensores de temperatura y ubicación satelital en tiempo real.
+
+#### Opción A — FMB120 (2G) · Económica
+
+| Componente / Concepto | Modelo | Frecuencia de Pago | Costo Estimado (USD) |
+|---|---|---|---|
+| **Dispositivo GPS** | Teltonika FMB120 — 2G (Puerto 1-Wire) | Pago Único | $50.00 – $70.00 |
+| **Sensor de Temperatura** | Sonda digital DS18B20 (Acero Inox.) | Pago Único | $4.00 – $7.00 |
+| **Instalación Física** | Mano de obra (Taller automotriz) | Pago Único | $25.00 – $40.00 |
+| **SIM M2M (Datos Celulares)** | Plan IoT/GPS (Claro / Movistar / Multicarrier) | Mensual | $3.00 – $5.00 / mes |
+| **Total Inversión Inicial (Por Camión)** | **Equipos + Instalación** | **Pago Único** | **$79.00 – $117.00** |
+| **Total Operativo Mensual (Por Camión)** | **Datos Celulares M2M** | **Mensual** | **$3.00 – $5.00 / mes** |
+| **Costo Operativo Anual (Por Camión)** | **Datos Celulares M2M × 12** | **Anual** | **$36.00 – $60.00 / año** |
+
+#### Opción B — FMC130 (4G LTE) · Recomendada
+
+| Componente / Concepto | Modelo | Frecuencia de Pago | Costo Estimado (USD) |
+|---|---|---|---|
+| **Dispositivo GPS** | Teltonika FMC130 — 4G LTE (Puerto 1-Wire) | Pago Único | $85.00 – $100.00 |
+| **Sensor de Temperatura** | Sonda digital DS18B20 (Acero Inox.) | Pago Único | $4.00 – $7.00 |
+| **Instalación Física** | Mano de obra (Taller automotriz) | Pago Único | $25.00 – $40.00 |
+| **SIM M2M (Datos Celulares)** | Plan IoT/GPS (Claro / Movistar / Multicarrier) | Mensual | $3.00 – $5.00 / mes |
+| **Total Inversión Inicial (Por Camión)** | **Equipos + Instalación** | **Pago Único** | **$114.00 – $147.00** |
+| **Total Operativo Mensual (Por Camión)** | **Datos Celulares M2M** | **Mensual** | **$3.00 – $5.00 / mes** |
+| **Costo Operativo Anual (Por Camión)** | **Datos Celulares M2M × 12** | **Anual** | **$36.00 – $60.00 / año** |
+
+### 3. Proyección por Número de Vehículos
+
+> Usando **Opción B (FMC130 4G — Recomendada)**. Inversión inicial única + costo operativo anual de conectividad.
+
+| N.° de Camiones | Inversión Inicial (Hardware + Instalación) | Costo Anual Conectividad M2M | **Costo Total Primer Año** |
+|:---:|---|---|---|
+| **1 camión** | $114 – $147 | $36 – $60 | **$150 – $207** |
+| **2 camiones** | $228 – $294 | $72 – $120 | **$300 – $414** |
+| **3 camiones** | $342 – $441 | $108 – $180 | **$450 – $621** |
+| **5 camiones** | $570 – $735 | $180 – $300 | **$750 – $1,035** |
+| **10 camiones** | $1,140 – $1,470 | $360 – $600 | **$1,500 – $2,070** |
+
+> *Nota: A partir del segundo año, solo se paga el costo anual de conectividad M2M (el hardware es de por vida). La plataforma de software ya está incluida en el costo del proyecto.*
